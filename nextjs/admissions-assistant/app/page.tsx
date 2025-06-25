@@ -1,4 +1,5 @@
 import { auth, signIn, signOut } from "@/auth";
+import { redirect } from "next/navigation";
 
 function SignIn() {
   return (
@@ -28,6 +29,19 @@ function SignOut({ children }: { children: React.ReactNode }) {
   );
 }
 
+async function RedirectToSignup() {
+  return (
+    <form
+      action={async () => {
+        "use server";
+        redirect("/signup");
+      }}
+    >
+      <button type="submit">Go to Signup</button>
+    </form>
+  );
+}
+
 export default async function Page() {
   let session = await auth();
   let user = session?.user?.email;
@@ -35,7 +49,7 @@ export default async function Page() {
   return (
     <section>
       <h1>Home</h1>
-      <div>{user ? <SignOut>{`Welcome ${user}`}</SignOut> : <SignIn />}</div>
+      <div>{user ? <SignOut>{`Welcome ${user}`}</SignOut> : <><SignIn /><br /><RedirectToSignup /></>}</div>
     </section>
   );
 }

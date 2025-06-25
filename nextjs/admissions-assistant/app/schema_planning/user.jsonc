@@ -1,0 +1,64 @@
+{
+    "username": "String",
+    "password": "Hashed PW",
+    "email": "email",
+    "profile": {
+        "GPA (/4)": "",
+        "SAT": {
+            "Highest Composite": "",
+            "Superscore": ""
+        },
+        "ACT": {
+            "Highest Composite": "",
+            "Superscore": ""
+        },
+        "AP Tests": [
+            {
+                "name": "",
+                "score": "",
+                "yearTaken": ""
+            }
+        ],
+        // I lowkey don't know how IB tests work so like if someone wants to open a pull request, feel free lol
+        "Awards/Honors": [
+            {
+                "name": "",
+                "yearReceived": "",
+                "recognition": ""
+            }
+        ],
+        "extracurriculars": [
+            {
+                "name": "",
+                "hours": "",
+                "years": ["9", "10", "11", "12"],
+                "impact": "",
+            }
+        ]
+    },
+    "collegeList": [
+        {
+            "name": "",
+            "acceptanceRate": "",
+            "type": "" // safety, match / target, reach, super reach (ivy level)
+        }
+    ],
+    "essays": [ // Common App, Coalition, UCs, Supplementals
+    /** 
+    Common App Should Have IDs of 1-9,
+    Coalition Should Have IDs of 10-19,
+    UCs should have IDs of 20-29,
+    Supplementals are from 50 and up
+    **/
+        {
+            "id": "",
+            "name": "",
+            "school": "",
+            "prompt": "",
+            "content": ""
+        }
+    ],
+
+    "admin": false, // if admin, true
+
+}
