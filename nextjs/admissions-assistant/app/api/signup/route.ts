@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
+import bcrypt from 'bcryptjs';
+import { v4 } from 'uuid';
 
 const uri = process.env.MONGODB_URI as string;
 const dbName = 'init-cluster'
@@ -23,7 +25,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Username already exists.' }, { status: 409 });
         }
 
-        await users.insertOne({ username, password }); // In production, hash the password!
+        const hashedPassword = await bcrypt.hash(password, 13);
+        await users.insertOne({ username, password: hashedPassword, id: v4() });
         await client.close();
 
         return NextResponse.json({ message: 'User created successfully.' }, { status: 201 });
