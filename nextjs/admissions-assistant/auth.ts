@@ -38,9 +38,9 @@ export const {
   })],
   callbacks: {
     session({session, user}) {
-      session.user.id = user.id;
-      console.log(session);
-      console.log(user)
+      // session.user.id = user.id;
+      // console.log(session);
+      // console.log(user)
       return session
     }
   }

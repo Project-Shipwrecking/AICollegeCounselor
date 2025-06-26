@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         }
 
         await client.connect();
-        const db = client.db('your-db-name'); // Replace with your DB name
+        const db = client.db('init-cluster'); // Replace with your DB name
         const users = db.collection('users');
 
         const user = await users.findOne({ username });
@@ -23,9 +23,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        // const passwordMatch = await bcrypt.compare(password, user.password);
 
-        if (!passwordMatch) {
+        if (user.password !== password) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 

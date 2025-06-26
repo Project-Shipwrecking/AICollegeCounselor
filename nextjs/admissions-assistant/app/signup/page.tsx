@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap'
 
 export default function SignupPage() {
-    const [form, setForm] = useState({ email: '', password: '' });
+    const [form, setForm] = useState({ username: '', password: '' });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -25,7 +25,7 @@ export default function SignupPage() {
             });
             if (res.ok) {
                 setMessage('Signup successful!');
-                setForm({ email: '', password: '' });
+                setForm({ username: '', password: '' });
             } else {
                 const data = await res.json();
                 setMessage(data.error || 'Signup failed.');
@@ -39,21 +39,21 @@ export default function SignupPage() {
 
     return (
         <div className="container" style={{ maxWidth: 400, margin: '2rem auto' }}>
-            <h1 className="mb-4">Sign Up</h1>
+            <h1 className="mb-4 text-center">Sign Up</h1>
             <form onSubmit={handleSubmit}>
             <div className="mb-3">
-                <label htmlFor="email" className="form-label">
-                Email:
+                <label htmlFor="username" className="form-label">
+                Username:
                 </label>
                 <input
-                type="email"
-                id="email"
-                name="email"
+                type="username"
                 className="form-control"
-                value={form.email}
+                id="username"
+                name="username"
+                value={form.username}
                 onChange={handleChange}
                 required
-                autoComplete="email"
+                autoComplete="username"
                 />
             </div>
             <div className="mb-3">
@@ -62,9 +62,9 @@ export default function SignupPage() {
                 </label>
                 <input
                 type="password"
+                className="form-control"
                 id="password"
                 name="password"
-                className="form-control"
                 value={form.password}
                 onChange={handleChange}
                 required
@@ -76,7 +76,7 @@ export default function SignupPage() {
             </button>
             </form>
             {message && (
-            <div className="alert mt-3" role="alert" style={{ color: message.includes('successful') ? 'green' : 'red' }}>
+            <div className="alert alert-info mt-3" role="alert">
                 {message}
             </div>
             )}

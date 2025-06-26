@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI as string;
-const dbName = process.env.MONGODB_DB as string;
+const dbName = 'init-cluster'
 
 export async function POST(req: NextRequest) {
     try {

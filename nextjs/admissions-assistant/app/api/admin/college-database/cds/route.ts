@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../../auth'
 import { MongoClient } from 'mongodb';
-g
+
 
 const uri = process.env.MONGODB_URI as string;
 const dbName = process.env.MONGODB_DB as string;
