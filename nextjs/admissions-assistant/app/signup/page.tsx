@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap'
 
 export default function SignupPage() {
     const [form, setForm] = useState({ email: '', password: '' });
@@ -37,38 +38,48 @@ export default function SignupPage() {
     };
 
     return (
-        <div style={{ maxWidth: 400, margin: '2rem auto' }}>
-            <h1>Sign Up</h1>
+        <div className="container" style={{ maxWidth: 400, margin: '2rem auto' }}>
+            <h1 className="mb-4">Sign Up</h1>
             <form onSubmit={handleSubmit}>
-                <label>
-                    Email
-                    <input
-                        type="email"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                        autoComplete="email"
-                    />
+            <div className="mb-3">
+                <label htmlFor="email" className="form-label">
+                Email:
                 </label>
-                <br />
-                <label>
-                    Password
-                    <input
-                        type="password"
-                        name="password"
-                        value={form.password}
-                        onChange={handleChange}
-                        required
-                        autoComplete="new-password"
-                    />
+                <input
+                type="email"
+                id="email"
+                name="email"
+                className="form-control"
+                value={form.email}
+                onChange={handleChange}
+                required
+                autoComplete="email"
+                />
+            </div>
+            <div className="mb-3">
+                <label htmlFor="password" className="form-label">
+                Password:
                 </label>
-                <br />
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Signing up...' : 'Sign Up'}
-                </button>
+                <input
+                type="password"
+                id="password"
+                name="password"
+                className="form-control"
+                value={form.password}
+                onChange={handleChange}
+                required
+                autoComplete="new-password"
+                />
+            </div>
+            <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                {loading ? 'Signing up...' : 'Sign Up'}
+            </button>
             </form>
-            {message && <p>{message}</p>}
+            {message && (
+            <div className="alert mt-3" role="alert" style={{ color: message.includes('successful') ? 'green' : 'red' }}>
+                {message}
+            </div>
+            )}
         </div>
     );
 }
