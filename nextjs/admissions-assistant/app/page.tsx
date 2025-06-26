@@ -1,5 +1,6 @@
 import { auth, signIn, signOut } from "@/auth";
 import { redirect } from "next/navigation";
+import Header from "@/components/Header";
 
 function SignIn() {
   return (
@@ -44,12 +45,13 @@ async function RedirectToSignup() {
 
 export default async function Page() {
   let session = await auth();
-  let user = session?.user.name;
+  let user = session?.user?.name;
   console.log(session)
 
   return (
     <section>
       <h1>Home</h1>
+      <Header />
       <div>{user ? <SignOut>{`Welcome ${user}`}</SignOut> : <><SignIn /><br /><RedirectToSignup /></>}</div>
     </section>
   );
