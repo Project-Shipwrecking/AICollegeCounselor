@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
+import { getToken } from "next-auth/jwt"
 
 const uri = process.env.MONGODB_URI as string;
 const dbName = process.env.MONGODB_DB as string;
@@ -7,8 +8,23 @@ const dbName = process.env.MONGODB_DB as string;
 // Accepts POST request from the user and adds it to the cds queue to be manually checked by an admin
 export async function POST(req: NextRequest) {
     try {
+        const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+        if (!token || !token.sub || !token.name) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const data = await req.json();
-        // init a database
+        // Validate required fields (e.g., id, name)
+        if (!data.id || !data.name) {
+            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        }
+
+        // Add user info to the data
+        data.user = {
+            id: token.sub,
+            username: token.name
+        };
+
         const client = new MongoClient(uri);
         await client.connect();
         const db = client.db(dbName);
@@ -24,8 +40,7 @@ export async function POST(req: NextRequest) {
     } catch (error) {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
-};
-
+}
 
 export async function GET(req: NextRequest) {
     try {
