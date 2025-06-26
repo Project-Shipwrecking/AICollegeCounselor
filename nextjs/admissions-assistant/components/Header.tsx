@@ -16,7 +16,7 @@ function Header() {
   }, []);
 
   return (
-    <header style={{ padding: "1rem", backgroundColor: "lightblue" }}>
+    <div style={{ padding: "1rem", backgroundColor: "lightblue" }}>
       <nav className="navbar navbar-expand-lg navbar-light bg-light mt-3 rounded">
         <h3 style={{margin: "1rem"}}>Admissions Assistant</h3>
         <div className="container-fluid">
@@ -84,7 +84,7 @@ function Header() {
           </div>
         </div>
       </nav>
-    </header>
+    </div>
   );
 }
 

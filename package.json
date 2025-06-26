@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "@atlaskit/css-reset": "^7.3.2",
+    "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
+    "@atlaskit/tokens": "^5.4.1",
+    "datatables.net-dt": "^2.3.2",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "multer": "^2.0.1",
@@ -8,5 +12,9 @@
     "pdf-parse": "^1.1.1",
     "tesseract.js": "^6.0.1",
     "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@compiled/babel-plugin": "^0.38.1",
+    "@compiled/babel-plugin-strip-runtime": "^0.38.0"
   }
 }
