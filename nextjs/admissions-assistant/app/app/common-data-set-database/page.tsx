@@ -7,12 +7,17 @@ import { dropTargetForExternal } from "@atlaskit/pragmatic-drag-and-drop/externa
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Select from "react-select";
+// import { auth } from "@/auth";
+import {useSession} from "next-auth/react"
 
 export default function Page() {
   "use client";
   const [dragActive, setDragActive] = React.useState(false);
   const [fileName, setFileName] = React.useState<string | null>(null);
   const dropRef = React.useRef<HTMLDivElement>(null);
+
+  const { data: session, status } = useSession();
+  const isAuthenticated = !!session;
 
   React.useEffect(() => {
     if (!dropRef.current) return;
@@ -321,6 +326,17 @@ export default function Page() {
             <button
               type="submit"
               className="bg-blue-600 text-primary rounded px-4 py-2 self-start"
+              disabled={
+              (() => {
+                // Use next-auth to check session
+                // Note: useSession must be called inside a component or hook
+                // So, we need to move it to the Page component
+                // For now, assume a variable `isAuthenticated` is available
+                // Replace with actual logic below
+                // disabled={!isAuthenticated}
+                return !isAuthenticated;
+              })()
+              }
             >
               Submit
             </button>
