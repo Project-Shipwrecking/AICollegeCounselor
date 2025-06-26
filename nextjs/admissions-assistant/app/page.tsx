@@ -6,11 +6,11 @@ function SignIn() {
     <form
       action={async () => {
         "use server";
-        await signIn("github");
+        await signIn("credentials");
       }}
     >
       <p>You are not logged in</p>
-      <button type="submit">Sign in with GitHub</button>
+      <button type="submit">Sign in!</button>
     </form>
   );
 }
@@ -45,6 +45,7 @@ async function RedirectToSignup() {
 export default async function Page() {
   let session = await auth();
   let user = session?.user?.email;
+  console.log(session)
 
   return (
     <section>

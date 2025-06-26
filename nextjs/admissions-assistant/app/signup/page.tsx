@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 // import 'bootstrap'
 
 export default function SignupPage() {

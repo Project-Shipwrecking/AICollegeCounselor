@@ -26,22 +26,42 @@ export const {
         body: JSON.stringify(credentials),
         headers: { "Content-Type": "application/json" }
       })
-      const user = await res.json()
+      const user = await res.json();
+
+      console.log(user)
+
+      // user.email = user.username;
+      user.name = user.username;
 
       // If no error and we have user data, return it
       if (res.ok && user) {
-        return user
+        return {
+          name: user.username,
+          // email: user.username,
+          id: user.id
+        }
       }
       // Return null if user data could not be retrieved
       return null
     }
   })],
   callbacks: {
-    session({session, user}) {
-      // session.user.id = user.id;
-      // console.log(session);
-      // console.log(user)
+    // jwt({ token, user, account, profile, trigger, session}) {
+    //   return {
+    //     ...token,
+    //   }
+    // },
+    session({session, user, token}) {
+      console.log("User:")
+      console.log(user)
+      console.log("Session:")
+      console.log(session)
+      console.log("Token:")
+      console.log(token)
       return session
     }
-  }
+  },
+  // session: {
+  //   strategy: "database"
+  // }
 });
