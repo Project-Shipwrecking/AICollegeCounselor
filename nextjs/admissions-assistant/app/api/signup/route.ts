@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
         }
 
         const hashedPassword = await bcrypt.hash(password, 13);
-        await users.insertOne({ username, password: hashedPassword, id: v4() });
+        await users.insertOne({ username, password: hashedPassword, id: v4(), admin: false });
         await client.close();
 
         return NextResponse.json({ message: 'User created successfully.' }, { status: 201 });

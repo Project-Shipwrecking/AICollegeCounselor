@@ -58,6 +58,7 @@ export const {
       console.log(session)
       console.log("Token:")
       console.log(token)
+      session.user.id = token?.sub || "";
       return session
     }
   },

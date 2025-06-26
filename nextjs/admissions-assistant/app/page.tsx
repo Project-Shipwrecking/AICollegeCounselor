@@ -44,7 +44,7 @@ async function RedirectToSignup() {
 
 export default async function Page() {
   let session = await auth();
-  let user = session?.user?.email;
+  let user = session?.user.name;
   console.log(session)
 
   return (
