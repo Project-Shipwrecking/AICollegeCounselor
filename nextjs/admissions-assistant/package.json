@@ -9,14 +9,20 @@
     "@atlaskit/css-reset": "^7.3.2",
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
     "@atlaskit/tokens": "^5.4.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/roboto": "^5.2.6",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
+    "@mui/x-data-grid": "^8.5.3",
     "bcryptjs": "^3.0.2",
     "bootstrap": "^5.3.7",
-    "datatables.net-dt": "^2.3.2",
     "mongodb": "^6.17.0",
     "next": "latest",
     "next-auth": "^5.0.0-beta.4",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-select": "^5.10.1"
   },
   "devDependencies": {
     "@compiled/babel-plugin": "^0.38.1",
