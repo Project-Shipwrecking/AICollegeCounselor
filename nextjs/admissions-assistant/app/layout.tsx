@@ -1,4 +1,6 @@
+import 'bootstrap/dist/css/bootstrap.css';
 import "./globals.css";
+import Header from '@/components/Header';
 
 export const metadata = {
   title: "Next.js Authentication",
@@ -12,6 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Header />
       <body>{children}</body>
     </html>
   );

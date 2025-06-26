@@ -1,36 +1,91 @@
-"use client"
+"use client";
 
 import React from "react";
 // import { auth, signIn, signOut } from "@/auth";
 
 function Header() {
-    const [isAdmin, setIsAdmin] = React.useState(false);
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
-    React.useEffect(() => {
-        fetch("/api/admin")
-            .then(res => res.json())
-            .then(data => {
-                if (data === true) setIsAdmin(true);
-            })
-            .catch(() => {});
-    }, []);
+  React.useEffect(() => {
+    fetch("/api/admin")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data === true) setIsAdmin(true);
+      })
+      .catch(() => {});
+  }, []);
 
-    return (
-        <header style={{ padding: "1rem", background: "#1a202c", color: "#fff" }}>
-            <h1 style={{ margin: 0, fontSize: "2rem" }}>Admissions Assistant</h1>
-            <nav>
-                <a href="/app/application-evaluator" style={{ color: "#fff", marginRight: "1rem" }}>Application Evaluator</a>
-                <a href="/app/application-manager" style={{ color: "#fff", marginRight: "1rem" }}>Application Manager</a>
-                <a href="/app/college-search" style={{ color: "#fff", marginRight: "1rem" }}>College Search</a>
-                <a href="/app/common-data-set-database" style={{ color: "#fff", marginRight: "1rem" }}>Common Data Set Database</a>
-                <a href="/app/essays" style={{ color: "#fff", marginRight: "1rem" }}>Essays</a>
-                <a href="/app/interview" style={{ color: "#fff", marginRight: "1rem" }}>Interview</a>
-                <a href="/app/profile" style={{ color: "#fff", marginRight: "1rem" }}>Profile</a>
-                <a href="/app/scholarship-search" style={{ color: "#fff", marginRight: "1rem" }}>Scholarship Search</a>
-                { isAdmin ? <a href="/admin" style={{ color: "red" }}>Admin</a> : <></>}
-            </nav>
-        </header>
-    );
+  return (
+    <header style={{ padding: "1rem", backgroundColor: "lightblue" }}>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light mt-3 rounded">
+        <h3 style={{margin: "1rem"}}>Admissions Assistant</h3>
+        <div className="container-fluid">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <a className="nav-link" href="/app/application-evaluator">
+                  Application Evaluator
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/app/application-manager">
+                  Application Manager
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/app/college-search">
+                  College Search
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/app/common-data-set-database">
+                  Common Data Set Database
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/app/essays">
+                  Essays
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/app/interview">
+                  Interview
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/app/profile">
+                  Profile
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/app/scholarship-search">
+                  Scholarship Search
+                </a>
+              </li>
+              {isAdmin && (
+                <li className="nav-item">
+                  <a className="nav-link text-danger" href="/admin">
+                    Admin
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
 }
 
 export default Header;

@@ -1,6 +1,5 @@
 import { auth, signIn, signOut } from "@/auth";
 import { redirect } from "next/navigation";
-import Header from "@/components/Header";
 
 function SignIn() {
   return (
@@ -25,7 +24,7 @@ function SignOut({ children }: { children: React.ReactNode }) {
       }}
     >
       <p>{children}</p>
-      <button type="submit">Sign out</button>
+      <button type="submit" className="btn mt-2 bg-danger text-light">Sign out</button>
     </form>
   );
 }
@@ -46,13 +45,25 @@ async function RedirectToSignup() {
 export default async function Page() {
   let session = await auth();
   let user = session?.user?.name;
-  console.log(session)
+  console.log(session);
 
-  return (
-    <section>
-      <h1>Home</h1>
-      <Header />
-      <div>{user ? <SignOut>{`Welcome ${user}`}</SignOut> : <><SignIn /><br /><RedirectToSignup /></>}</div>
-    </section>
+  return (      
+    <div className="container m-4">
+      {/* <h1>Hello</h1> */}
+      <div className="mt-4">
+        {user ? (
+          <SignOut>
+            <span className="fw-bold">{`Welcome ${user}`}</span>
+          </SignOut>
+        ) : (
+          <>
+            <div className="mb-3">
+              <SignIn />
+            </div>
+            <RedirectToSignup />
+          </>
+        )}
+      </div>
+    </div>
   );
 }
