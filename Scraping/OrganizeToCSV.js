@@ -20,23 +20,27 @@ async function convertToCSV() {
     const entry = JSON.parse(fs.readFileSync(filePath, "utf8"));
     return {
       id: entry.id,
+      usNewsId: entry.us_news_id,
+      type: entry.type,
       name: entry.name,
       rank: entry.rank,
       location: `${entry.location.city}, ${entry.location.state}`,
+      city: entry.location.city,
+      state: entry.location.state,
       tuition: entry.searchData.tuition,
       enrollment: entry.searchData.enrollment.value,
       costAfterAid: entry.searchData.costAfterAid,
       percentReceivingAid: entry.searchData.percentReceievingAid,
       acceptanceRate: entry.searchData.acceptanceRate,
-      hsGpaAvg: entry.searchData.hsGpaAvg,
-      satAvg: entry.searchData.satAvg,
-      actAvg: entry.searchData.actAvg,
-      engineeringRepScore: entry.majorRankings.engineeringRepScore,
-      businessRepScore: entry.majorRankings.businessRepScore,
-      computerScienceRepScore: entry.majorRankings.computerScienceRepScore,
-      nursingRepScore: entry.majorRankings.nursingRepScore,
-      psychologyRepScore: entry.majorRankings.psychologyRepScore,
-      economicsRepScore: entry.majorRankings.economicsRepScore,
+      // hsGpaAvg: entry.searchData.hsGpaAvg,
+      // satAvg: entry.searchData.satAvg,
+      // actAvg: entry.searchData.actAvg,
+      // engineeringRepScore: entry.majorRankings.engineeringRepScore,
+      // businessRepScore: entry.majorRankings.businessRepScore,
+      // computerScienceRepScore: entry.majorRankings.computerScienceRepScore,
+      // nursingRepScore: entry.majorRankings.nursingRepScore,
+      // psychologyRepScore: entry.majorRankings.psychologyRepScore,
+      // economicsRepScore: entry.majorRankings.economicsRepScore,
       description: entry.description,
     };
   });
@@ -48,6 +52,10 @@ async function convertToCSV() {
   } catch (error) {
     console.error("Error converting data to CSV:", error.message);
   }
+
+  const jsonOutputFile = "organized_data.json";
+  fs.writeFileSync(jsonOutputFile, JSON.stringify(data, null, 2));
+  console.log(`Data successfully written to ${jsonOutputFile}`);
 }
 
 if(require.main === module) {
