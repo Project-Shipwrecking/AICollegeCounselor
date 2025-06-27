@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import { getToken } from "next-auth/jwt"
+import { v4 } from 'uuid';
 
 const uri = process.env.MONGODB_URI as string;
 const dbName = process.env.MONGODB_DB as string;
@@ -14,8 +15,9 @@ export async function POST(req: NextRequest) {
         }
 
         const data = await req.json();
+
         // Validate required fields (e.g., id, name)
-        if (!data.id || !data.name) {
+        if (!data.name) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
@@ -24,6 +26,8 @@ export async function POST(req: NextRequest) {
             id: token.sub,
             username: token.name
         };
+
+        data.id = v4();
 
         const client = new MongoClient(uri);
         await client.connect();

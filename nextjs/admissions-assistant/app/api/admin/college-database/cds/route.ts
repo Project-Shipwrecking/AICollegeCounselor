@@ -1,38 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '../../../../../auth'
 import { MongoClient } from 'mongodb';
 
 
 const uri = process.env.MONGODB_URI as string;
 const dbName = process.env.MONGODB_DB as string;
-
-// Accepts POST request from the admin and adds it to the cds database
-export async function POST(req: NextRequest) {
-    try {
-        // Check if the user is authenticated and is an admin
-        const session = await (global as any).getServerSession?.();
-        if (!session || !session.user || !session.user.isAdmin) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-        const data = await req.json();
-        // init a database
-        const client = new MongoClient(uri);
-        await client.connect();
-        const db = client.db(dbName);
-        const collection = db.collection('cds');
-        await collection.updateOne(
-            { id: data.id },
-            { $set: data },
-            { upsert: true }
-        );
-        await client.close();
-
-        return NextResponse.json({ message: 'CDS data received', data }, { status: 201 });
-    } catch (error) {
-        return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
-    }
-};
-
 
 export async function GET(req: NextRequest) {
     try {

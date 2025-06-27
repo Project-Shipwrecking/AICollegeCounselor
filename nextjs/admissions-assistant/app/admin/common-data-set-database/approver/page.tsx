@@ -15,13 +15,13 @@ async function checkAdmin() {
 
 // Fetch pending submissions (replace with your actual API endpoint)
 async function fetchPending() {
-  const res = await fetch("/api/common-data-set/pending");
+  const res = await fetch("/api/admin/college-database/cds/pending");
   return await res.json();
 }
 
 // Approve or reject a submission
 async function handleAction(id: string, action: "approve" | "reject") {
-  await fetch(`/api/common-data-set/${action}`, {
+  await fetch(`/api/admin/college-database/cds/${action}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id }),

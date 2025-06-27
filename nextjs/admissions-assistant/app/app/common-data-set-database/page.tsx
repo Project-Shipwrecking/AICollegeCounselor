@@ -4,11 +4,11 @@ import React from "react";
 
 import { dropTargetForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
 
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Select from "react-select";
 // import { auth } from "@/auth";
-import {useSession} from "next-auth/react"
+import { useSession } from "next-auth/react";
 
 export default function Page() {
   "use client";
@@ -244,7 +244,34 @@ export default function Page() {
             className="flex flex-col gap-4 mt-4"
             onSubmit={(e) => {
               e.preventDefault();
-              alert("Manual college data submitted (not yet implemented).");
+              const form = e.target as HTMLFormElement;
+              const formData = new FormData(form);
+                const data = {
+                year: formData.get("year") as string,
+                name: formData.get("name") as string,
+                acceptanceRate: formData.get("acceptanceRate") as string,
+                applicationType: formData.getAll("applicationType"),
+                testPolicy: formData.get("test-policy") as string,
+                gpa: formData.get("gpa") as string,
+                sat: formData.get("sat") as string,
+                act: formData.get("act") as string,
+                lor: formData.get("lor") as string,
+                };
+              fetch("/api/college-database/cds", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              })
+                .then(async (res) => {
+                  if (!res.ok) throw new Error(await res.text());
+                  alert("Manual college data submitted!");
+                  form.reset();
+                })
+                .catch((err) => {
+                  alert("Submission failed: " + err.message);
+                });
             }}
           >
             <div className="flex gap-4 flex-wrap">
@@ -326,17 +353,7 @@ export default function Page() {
             <button
               type="submit"
               className="bg-blue-600 text-primary rounded px-4 py-2 self-start"
-              disabled={
-              (() => {
-                // Use next-auth to check session
-                // Note: useSession must be called inside a component or hook
-                // So, we need to move it to the Page component
-                // For now, assume a variable `isAuthenticated` is available
-                // Replace with actual logic below
-                // disabled={!isAuthenticated}
-                return !isAuthenticated;
-              })()
-              }
+              disabled={!isAuthenticated}
             >
               Submit
             </button>
