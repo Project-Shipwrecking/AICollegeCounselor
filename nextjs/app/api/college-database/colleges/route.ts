@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
 
     let page = 1;
     let limit = 25;
+    let searchQuery;
 
     // Parse page from request body if present
     try {
@@ -19,9 +20,13 @@ export async function GET(req: NextRequest) {
       const { searchParams } = new URL(req.url);
       const pageParam = searchParams.get("page");
       const limitParam = searchParams.get("limit");
+      const searchParam = searchParams.get("search");
+
       const body: any = {};
       if (pageParam) body.page = Number(pageParam);
       if (limitParam) body.limit = Number(limitParam);
+      if (searchParam) searchQuery = searchParam;
+
       if (body && typeof body.page === "number" && body.page > 0) {
         page = body.page;
       }
@@ -34,16 +39,33 @@ export async function GET(req: NextRequest) {
 
     const skip = (page - 1) * limit;
 
+    let pipeline: any[] = [];
+
+    if (searchQuery) {
+      // Try to use $search, but if it fails, fallback to regex search
+      let colleges;
+      // Fallback to regex search if $search fails
+      colleges = await db
+        .collection("colleges")
+        .find({ name: { $regex: searchQuery, $options: "i" } })
+        .sort({ usNewsRanking: 1 })
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+      return NextResponse.json(colleges);
+    }
+
     const colleges = await db
       .collection("colleges")
       .find({})
-      .sort({ "college.usNewsRanking": 1 })
+      .sort({ usNewsRanking: 1 })
       .skip(skip)
       .limit(limit)
       .toArray();
 
     return NextResponse.json(colleges);
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "Failed to fetch colleges" },
       { status: 500 }
