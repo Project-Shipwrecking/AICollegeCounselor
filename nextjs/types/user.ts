@@ -14,9 +14,12 @@ export type user = {
  * Includes Supplementals
  */
 export type Essay = {
-    id: String,
+    id: String | number,
+    name: String,
+    prompt: String,
+    wordCount: Number,
     year: String, 
-    school: {
+    school: null | {
         name: String,
         id: String
     },
@@ -25,7 +28,7 @@ export type Essay = {
 
 export type Extracurriculars = {
     name: String,
-    type: "sport" | "club" | "research" | "hobby" | "volunteering" | "summer program" | String,
+    type: "sport" | "club" | "research" | "hobby" | "volunteering" | "summer program" | "job" | "intern" |  String,
     leadershipPosition: String,
     years: String,
     hoursPerYear: String,

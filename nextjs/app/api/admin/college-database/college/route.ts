@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         const client = new MongoClient(uri);
         await client.connect();
         const db = client.db(dbName);
-        const collection = db.collection('college');
+        const collection = db.collection('colleges');
         await collection.updateOne(
             { id: data.id },
             { $set: data },
