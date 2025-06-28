@@ -5,8 +5,8 @@ export type user = {
     admin: boolean,
     application: {
         essays: Essay[]
-        extracurriculars: any[]
-        honors: any[]
+        extracurriculars: Extracurriculars[]
+        honors: Honors[]
     }
 }
 
@@ -25,6 +25,7 @@ export type Essay = {
 
 export type Extracurriculars = {
     name: String,
+    type: "sport" | "club" | "research" | "hobby" | "volunteering" | "summer program" | String,
     leadershipPosition: String,
     years: String,
     hoursPerYear: String,

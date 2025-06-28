@@ -1,17 +1,12 @@
-"use server"
-
-import { NextRequest } from 'next/server'
-import React from 'react'
-import { MongoClient } from 'mongodb';
-import bcrypt from 'bcryptjs';
-import { v4 } from 'uuid';
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { MongoClient } from "mongodb";
 import { getToken } from "next-auth/jwt";
-import { user } from "@/types/user";
+
+"use server";
+
 
 const uri = process.env.MONGODB_URI as string;
-const dbName = 'init-cluster'
-
+const dbName = process.env.MONGODB_DB as string;
 const client = new MongoClient(uri);
 
 export async function GET(req: NextRequest) {
@@ -29,12 +24,12 @@ export async function GET(req: NextRequest) {
             id: token.sub,
         });
 
-        if (!user || !user.application || !user.application.extracurriculars) {
+        if (!user || !user.application || !user.application.honors) {
             await client.close();
-            return NextResponse.json({ error: "No extracurriculars found for this user." }, { status: 404 });
+            return NextResponse.json({ error: "No honors found for this user." }, { status: 404 });
         }
         await client.close();
-        return NextResponse.json(user.application.extracurriculars);
+        return NextResponse.json(user.application.honors);
 
     } catch (error) {
         await client.close();
@@ -50,8 +45,8 @@ export async function PUT(req: NextRequest) {
         }
 
         const data = await req.json();
-        if (!data || !data.extracurriculars) {
-            return NextResponse.json({ error: "Extracurriculars data is required." }, { status: 400 });
+        if (!data || !data.honors) {
+            return NextResponse.json({ error: "Honors data is required." }, { status: 400 });
         }
 
         await client.connect();
@@ -67,14 +62,14 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json({ error: "User not found." }, { status: 404 });
         }
 
-        // Update the user's extracurriculars
+        // Update the user's honors
         await collection.updateOne(
             { id: token.sub },
-            { $set: { "application.extracurriculars": data.extracurriculars } }
+            { $set: { "application.honors": data.honors } }
         );
 
         await client.close();
-        return NextResponse.json({ message: "Extracurriculars updated successfully." }, { status: 200 });
+        return NextResponse.json({ message: "Honors updated successfully." }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
@@ -95,22 +90,20 @@ export async function DELETE(req: NextRequest) {
             id: token.sub,
         });
 
-        if (!user || !user.application || !user.application.extracurriculars) {
+        if (!user || !user.application || !user.application.honors) {
             await client.close();
-            return NextResponse.json({ error: "No extracurriculars found for this user." }, { status: 404 });
+            return NextResponse.json({ error: "No honors found for this user." }, { status: 404 });
         }
 
-        // Remove extracurriculars
+        // Remove honors
         await collection.updateOne(
             { id: token.sub },
-            { $set: { "application.extracurriculars": [] } }
+            { $unset: { "application.honors": "" } }
         );
 
         await client.close();
-        return NextResponse.json({ message: "Extracurriculars deleted successfully." }, { status: 200 });
+        return NextResponse.json({ message: "Honors deleted successfully." }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
-
-// Optionally, you can implement POST, PATCH, OPTIONS, HEAD as needed.
