@@ -24,16 +24,21 @@ async function main() {
 
     // Prepare CollegeBasicData objects
     const docs = colleges
-      .filter(college => college.id && college.name && college.location)
+      .filter(college => college.id && college.name)
       .map(college => ({
         id: college.id,
+        name: college.name,
+        type: college.type,
         usNews: college.usNewsId
-          ? { id: college.usNewsId, description: college.description }
+          ? { 
+            id: college.usNewsId, description: college.description 
+          }
           : undefined,
         location: college.location,
-        description: college.description,
-        tuitionInState: typeof college.tuition === "number" ? college.tuition : undefined,
-        undergraduateEnrollment: typeof college.enrollment === "number" ? college.enrollment : undefined,
+        // description: college.description,
+        tuition: typeof college.tuition === "number" ? college.tuition : undefined,
+        enrollment: typeof college.enrollment === "number" ? college.enrollment : undefined,
+        acceptanceRate: college.acceptanceRate
         // Add more mappings as needed
       }));
 
@@ -41,7 +46,14 @@ async function main() {
       console.log("No valid college data to upload.");
       return;
     }
+    // Delete the existing collection if it exists
+    const collections = await db.listCollections({ name: collectionName }).toArray();
+    if (collections.length > 0) {
+      await collection.drop();
+      console.log(`Dropped existing collection: ${collectionName}`);
+    }
 
+    // Insert the new documents
     const result = await collection.insertMany(docs, { ordered: false });
     console.log(`Inserted ${result.insertedCount} colleges.`);
   } catch (err) {

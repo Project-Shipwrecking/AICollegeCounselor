@@ -24,28 +24,15 @@ export type CommonDataSetFormat = {
 
 export type CollegeBasicData = {
     id: string; // UUID
+    name: string;
+    type?: string;
     usNews?: {
         id: string;
         description: string;
     };
-    location: string; // City, State, or City, Country
-
-    // Non-CDS related fields you might consider:
-    website?: string;
-    establishedYear?: number;
-    mascot?: string;
-    schoolType?: 'Public' | 'Private' | 'For-Profit' | 'Community College' | string;
-    religiousAffiliation?: string;
-    undergraduateEnrollment?: number;
-    graduateEnrollment?: number;
-    campusSetting?: 'Urban' | 'Suburban' | 'Rural' | string;
-    // notableAlumni?: string[];
-    colors?: string[];
-    logoUrl?: string;
-    description?: string;
-    tuitionInState?: number;
-    tuitionOutOfState?: number;
-    // endowment?: number;
-    // athleticsConference?: string;
-    nickname?: string;
+    location?: string;
+    tuition?: number;
+    enrollment?: number;
+    acceptanceRate?: number;
+    // Add more fields as needed based on your data structure
 };
