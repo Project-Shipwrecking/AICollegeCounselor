@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
 
     const skip = (page - 1) * limit;
 
-    let pipeline: any[] = [];
+    // let pipeline: any[] = [];
 
     if (searchQuery) {
       // Try to use $search, but if it fails, fallback to regex search
