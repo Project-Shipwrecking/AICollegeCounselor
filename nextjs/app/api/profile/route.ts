@@ -17,7 +17,7 @@ export async function GET(request: Request) {
   const database = client.db(db);
   const profile = await database
     .collection("users")
-    .findOne({ userId: token.sub });
+    .findOne({ id: token.sub });
 
   if (profile && profile.password) {
     // Remove password from profile before returning

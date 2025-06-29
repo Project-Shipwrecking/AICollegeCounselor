@@ -2,8 +2,7 @@
 
 import React from "react";
 import { useEffect, useState } from "react";
-import type { CommonDataSetFormat, CollegeBasicData } from "@/types/college";
-import { useSearchParams } from "next/navigation";
+import type { CollegeBasicData } from "@/types/college";
 
 export default function Page() {
   const [limit, setLimit] = useState(25);
@@ -33,7 +32,7 @@ export default function Page() {
   return (
     <>
       <div className="container bg-white py-1 rounded">
-        <div className="mb-4">
+        <div className="m-3">
           <div className="input-group">
             <input
               type="text"
@@ -91,35 +90,44 @@ export default function Page() {
       <br />
 
       <div className="container bg-white py-1 rounded">
-        {colleges.map((college, idx) => (
-          <div
-            key={idx}
-            className="rounded m-3 p-3"
-            style={{
-              backgroundColor: "lightblue",
-            }}
-          >
-            <h2>{college.name}</h2>
-            <p>
-              <strong>Location:</strong> {college.location}
-            </p>
-            <p>
-              <strong>Type:</strong> {college.type}
-            </p>
-            <p>
-              <strong>Tuition:</strong> ${college.tuition ?? "N/A"}
-            </p>
-            <p>
-              <strong>Enrollment:</strong> {college.enrollment ?? "N/A"}
-            </p>
-            <p>
-              <strong>Acceptance Rate:</strong>{" "}
-              {college.acceptanceRate != null
-                ? `${college.acceptanceRate}%`
-                : "N/A"}
-            </p>
-          </div>
-        ))}
+        <div className='row'>
+          {colleges.map((college, idx) => (
+            // Turn into a grid of cards
+            // Use Bootstrap classes for responsive design
+            <div key={idx} className="col-md-4 col-sm-6 col-xs-12">
+              {/* Card for each college */}
+              <div className="card m-3">
+                <div className="card-body">
+                  <h5 className="card-title">{college.name}</h5>
+                  <h6 className="card-subtitle mb-2 text-muted">
+                    {college.location}
+                  </h6>
+                  <p className="card-text mb-2">
+                    <strong>Type:</strong> {college.type?.toLowerCase().split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ") || "N/A"}
+                    <br />
+                    <strong>Tuition:</strong> ${college.tuition?.toLocaleString() ?? "N/A"}
+                    <br />
+                    <strong>Enrollment:</strong> {college.enrollment?.toLocaleString() ?? "N/A"}
+                    <br />
+                    <strong>Acceptance Rate:</strong>{" "}
+                    {college.acceptanceRate != null
+                      ? `${college.acceptanceRate}%`
+                      : "N/A"}
+                  </p>
+                  {/* add image */}
+                  {college.photos?.medium && (
+                    <img
+                      src={String(college.photos.large)}
+                      className="card-img-top"
+                      alt={`${college.name} image`}
+                      style={{ maxHeight: "200px", objectFit: "cover" }}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
         <div className="d-flex justify-content-center my-4">
           <div className="d-flex align-items-center gap-4">
             <button

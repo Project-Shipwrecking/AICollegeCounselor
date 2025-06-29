@@ -48,17 +48,18 @@ export async function GET(req: NextRequest) {
       colleges = await db
         .collection("colleges")
         .find({ name: { $regex: searchQuery, $options: "i" } })
-        .sort({ usNewsRanking: 1 })
+        .sort({ usNewsOverallRank: 1 })
         .skip(skip)
         .limit(limit)
         .toArray();
       return NextResponse.json(colleges);
     }
+// How can I make sure that usNewsOverallRank is positive?
 
     const colleges = await db
       .collection("colleges")
-      .find({})
-      .sort({ usNewsRanking: 1 })
+      .find({ usNewsOverallRank: { $gt: 0 } })
+      .sort({ usNewsOverallRank: 1 })
       .skip(skip)
       .limit(limit)
       .toArray();

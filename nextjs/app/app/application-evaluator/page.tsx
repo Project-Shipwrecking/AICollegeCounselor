@@ -1,3 +1,4 @@
+"use client";
 import { Essay, Extracurriculars, Honors, user, Profile } from "@/types/user";
 import React, { useEffect } from "react";
 
@@ -67,7 +68,7 @@ export default function Page() {
       setHonors(data);
     };
     const fetchProfile = async () => {
-      const response = await fetch("/api/application/profile");
+      const response = await fetch("/api/profile");
       if (!response.ok) {
         console.error("Failed to fetch profile");
         return;
@@ -95,11 +96,12 @@ export default function Page() {
   }
 
   return (
-    <div className="container mx-auto py-4">
+    <div className="container mx-auto py-4 rounded bg-white shadow-md mb-3">
       <h1 className="text-2xl font-bold mb-4">Application Evaluator</h1>
 
       <div id="profile">
         <h2 className="text-xl font-bold mb-2">Profile</h2>
+        <sub className="text-gray-500">To edit, go to <a href="/application-manager" className="text-blue-500">Profile</a></sub>
         <div className="mb-4">
           <p>
             <strong>Graduation Year:</strong> {profile.graduationYear || ""}
@@ -175,7 +177,7 @@ export default function Page() {
       <div id="essays">
         <h2 className="text-xl font-bold mb-2">Essays</h2>
         <button
-          className="mb-2"
+          className="mb-2 btn btn-primary"
           onClick={(e) => {
             // get all checkboxes that are children of this button's parent
             e.preventDefault();
@@ -200,7 +202,7 @@ export default function Page() {
       <div id="extracurriculars">
         <h2 className="text-xl font-bold mb-2">Extracurriculars</h2>
         <button
-          className="mb-2"
+          className="mb-2 btn btn-primary"
           onClick={(e) => {
             e.preventDefault();
             const checkboxes = document
@@ -229,7 +231,7 @@ export default function Page() {
       <div id="honors">
         <h2 className="text-xl font-bold mb-2">Honors</h2>
         <button
-          className="mb-2"
+          className="mb-2 btn btn-primary"
           onClick={(e) => {
             e.preventDefault();
             const checkboxes = document
@@ -253,6 +255,7 @@ export default function Page() {
 
       {/* Ask LLM for suggestions (POST https://ai.hackclub.com/chat/completions)*/}
       <button
+      className="btn btn-primary mt-4 mb-2"
         onClick={async () => {
           const response = await fetch("https://ai.hackclub.com/chat/completions", {
             method: "POST",

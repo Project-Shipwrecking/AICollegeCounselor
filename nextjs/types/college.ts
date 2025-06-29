@@ -34,5 +34,12 @@ export type CollegeBasicData = {
     tuition?: number;
     enrollment?: number;
     acceptanceRate?: number;
+    usNewsOverallRank?: number; // Overall rank from US News
+    photos: {
+        thumb?: string | null; // URL to thumbnail image
+        medium?: string | null; // URL to medium-sized image
+        large?: string | null; // URL to large image
+        small?: string | null; // URL to small image
+    }
     // Add more fields as needed based on your data structure
 };

@@ -41,13 +41,13 @@ async function main() {
         acceptanceRate: college.acceptanceRate,
         usNewsOverallRank: college.rankingSortRank,
         photos: {
-          thumb: college.photos?.thumb || null,
-          medium: college.photos?.medium || null,
-          large: college.photos?.large || null,
-          small: college.photos?.small || null,
+          thumb: college.thumb || null,
+          medium: college.medium || null,
+          large: college.large || null,
+          small: college.small || null,
         },
-        satAverage: college.testAvgs?.sat || null,
-        actAverage: college.testAvgs?.act || null,
+        // satAverage: college.testAvgs?.sat || null,
+        // actAverage: college.testAvgs?.act || null,
 
         // Add more mappings as needed
       }));

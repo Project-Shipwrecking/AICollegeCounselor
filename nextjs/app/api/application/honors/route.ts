@@ -1,8 +1,7 @@
+"use server";
 import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 import { getToken } from "next-auth/jwt";
-
-"use server";
 
 
 const uri = process.env.MONGODB_URI as string;
