@@ -7,7 +7,9 @@ const client = new MongoClient(uri);
 
 export async function POST(req: NextRequest) {
     try {
-        const { username, password } = await req.json();
+        const json = await req.json();
+        console.log(json)
+        const { username, password } = json;
         console.log(username + " " + password)
 
         if (!username || !password) {

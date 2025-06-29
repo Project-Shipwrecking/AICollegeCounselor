@@ -77,43 +77,6 @@ export async function PUT(req: NextRequest) {
     }
 }
 
-// export async function PATCH(req: NextRequest) {
-//     try {
-//         const token = await getToken({ req });
-//         if (!token || !token.sub) {
-//             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//         }
-
-//         const data = await req.json();
-//         if (!data || !data.essays) {
-//             return NextResponse.json({ error: "Essays data is required." }, { status: 400 });
-//         }
-
-//         await client.connect();
-
-//         const db = client.db(dbName);
-//         const collection = db.collection("users");
-//         const user = await collection.findOne({
-//             id: token.sub,
-//         });
-
-//         if (!user) {
-//             await client.close();
-//             return NextResponse.json({ error: "User not found." }, { status: 404 });
-//         }
-
-//         // Update the user's essays
-//         await collection.updateOne(
-//             { id: token.sub },
-//             { $set: { "application.essays": data.essays } }
-//         );
-
-//         await client.close();
-//         return NextResponse.json({ message: "Essays updated successfully." }, { status: 200 });
-//     } catch (error) {
-//         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
-//     }
-// }
 export async function DELETE(req: NextRequest) {
     try {
         const token = await getToken({ req });

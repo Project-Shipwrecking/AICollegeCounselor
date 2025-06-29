@@ -6,7 +6,7 @@ function SignIn() {
     <form
       action={async () => {
         "use server";
-        await signIn("credentials");
+        await signIn();
       }}
     >
       <p>You are not logged in</p>

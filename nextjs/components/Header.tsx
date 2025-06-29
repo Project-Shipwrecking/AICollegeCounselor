@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { text } from "stream/consumers";
 // import { auth, signIn, signOut } from "@/auth";
 
 function Header() {
@@ -18,7 +19,7 @@ function Header() {
   return (
     <div style={{ padding: "1rem", backgroundColor: "lightblue" }}>
       <nav className="navbar navbar-expand-lg navbar-light bg-light mt-3 rounded">
-        <h3 style={{margin: "1rem"}}>Admissions Assistant</h3>
+        <h3 style={{margin: "1rem"}} className="text-primary"> <a href="/">Admissions Assistant</a></h3>
         <div className="container-fluid">
           <button
             className="navbar-toggler"
