@@ -17,7 +17,12 @@
 - [X] Profile
     - Maybe some CSS makeover if I get copilot
 - [] Scholarship Search
-- []
+    - Might just give up on this one... too hard
+- [] Admin Approval
+    - Essay Templates
+    - College Data
+    - College Common App Data
+    - 
 
 
 ## Databases
