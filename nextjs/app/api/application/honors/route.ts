@@ -11,7 +11,7 @@ const client = new MongoClient(uri);
 
 export async function GET(req: NextRequest) {
     try {
-        const token = await getToken({ req });
+        const token = await getToken({ req, secret: process.env.AUTH_SECRET });
         if (!token || !token.sub || !token.name) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
     try {
-        const token = await getToken({ req });
+        const token = await getToken({ req, secret: process.env.AUTH_SECRET });
         if (!token || !token.sub) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -77,7 +77,7 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        const token = await getToken({ req });
+        const token = await getToken({ req, secret: process.env.AUTH_SECRET });
         if (!token || !token.sub) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

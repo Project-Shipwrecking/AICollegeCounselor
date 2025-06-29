@@ -13,7 +13,7 @@ const client = new MongoClient(uri);
 
 export async function GET(req: NextRequest) {
   try {
-    const token = await getToken({ req });
+    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
     if (!token || !token.sub || !token.name) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -38,10 +38,49 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-// export async function POST(req: NextRequest) {}
+export async function POST(req: NextRequest) {
+    // upserts a single essay for the user
+    try {
+        const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+        if (!token || !token.sub) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const data = await req.json();
+        if (!data || !data.essay) {
+            return NextResponse.json({ error: "Essay data is required." }, { status: 400 });
+        }
+
+        await client.connect();
+
+        const db = client.db(dbName);
+        const collection = db.collection("users");
+        const user = await collection.findOne({
+            id: token.sub,
+        });
+
+        if (!user) {
+            await client.close();
+            return NextResponse.json({ error: "User not found." }, { status: 404 });
+        }
+
+        // Upsert the essay
+        await collection.updateOne(
+            { id: token.sub },
+            // change to push
+            { $push: { "application.essays": data.essay } },
+            { upsert: true }
+        );
+
+        await client.close();
+        return NextResponse.json({ message: "Essay added/updated successfully." }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}
 export async function PUT(req: NextRequest) {
     try {
-        const token = await getToken({ req });
+        const token = await getToken({ req, secret: process.env.AUTH_SECRET });
         if (!token || !token.sub) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -73,13 +112,14 @@ export async function PUT(req: NextRequest) {
         await client.close();
         return NextResponse.json({ message: "Essays updated successfully." }, { status: 200 });
     } catch (error) {
+        console.error("Error updating essays:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
 
 export async function DELETE(req: NextRequest) {
     try {
-        const token = await getToken({ req });
+        const token = await getToken({ req, secret: process.env.AUTH_SECRET });
         if (!token || !token.sub) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
