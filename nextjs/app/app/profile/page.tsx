@@ -4,9 +4,65 @@ import { Profile, user } from "@/types/user";
 import React, { useEffect } from "react";
 
 export default function Page() {
-  const [userData, setUserData] = React.useState<user | null>(null);
-  const [profile, setProfile] = React.useState<Profile | null>(null);
+  const [userData, setUserData] = React.useState<user | null>({
+    username: "",
+    password: "",
+    admin: false,
+    id: "",
+    application: {
+      essays: [],
+      extracurriculars: [],
+      honors: [],
+    },
+    profile: {
+      graduationYear: "",
+      gender: "",
+      race: "",
+      state: "",
+      country: "",
+      unweightedGPA: "",
+      weightedGPA: "",
+      classRank: "",
+      classSize: "",
+      school: {
+        name: "",
+        id: "",
+      },
+      schoolType: "",
+      schoolLocation: "",
+      schoolSize: "",
+      satScore: "",
+      actScore: "",
+      apScores: [],
+    },
+  });
+  const [profile, setProfile] = React.useState<Profile>({
+    graduationYear: "",
+    gender: "",
+    race: "",
+    state: "",
+    country: "",
+    unweightedGPA: "",
+    weightedGPA: "",
+    classRank: "",
+    classSize: "",
+    school: {
+      name: "",
+      id: "",
+    },
+    schoolType: "",
+    schoolLocation: "",
+    schoolSize: "",
+    satScore: "",
+    actScore: "",
+    apScores: [],
+  });
   const [loading, setLoading] = React.useState(true);
+  const [newApScore, setNewApScore] = React.useState({
+    subject: "",
+    score: "",
+    year: "",
+  });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -18,6 +74,30 @@ export default function Page() {
         const data = await response.json();
         setUserData(data.user);
         setProfile(data.profile);
+        // If profile is null, initialize it with default values
+        if (!data.profile) {
+          setProfile({
+            graduationYear: "",
+            gender: "",
+            race: "",
+            state: "",
+            country: "",
+            unweightedGPA: "",
+            weightedGPA: "",
+            classRank: "",
+            classSize: "",
+            school: {
+              name: "",
+              id: "",
+            },
+            schoolType: "",
+            schoolLocation: "",
+            schoolSize: "",
+            satScore: "",
+            actScore: "",
+            apScores: [],
+          });
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -34,9 +114,11 @@ export default function Page() {
       ) : (
         <div>
           <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
-          {profile ? (
             <div>
               {/* change each p to a text input  */}
+              <label className="block mb-2 me-2">
+                <strong>Graduation Year:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.graduationYear)}
@@ -47,6 +129,10 @@ export default function Page() {
                   })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>Gender:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.gender)}
@@ -54,6 +140,10 @@ export default function Page() {
                   setProfile({ ...profile, gender: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>Race:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.race)}
@@ -61,6 +151,10 @@ export default function Page() {
                   setProfile({ ...profile, race: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>State:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.state)}
@@ -68,6 +162,10 @@ export default function Page() {
                   setProfile({ ...profile, state: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>Country:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.country)}
@@ -75,6 +173,10 @@ export default function Page() {
                   setProfile({ ...profile, country: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>Unweighted GPA:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.unweightedGPA)}
@@ -82,6 +184,10 @@ export default function Page() {
                   setProfile({ ...profile, unweightedGPA: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>Weighted GPA:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.weightedGPA)}
@@ -89,6 +195,10 @@ export default function Page() {
                   setProfile({ ...profile, weightedGPA: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>Class Rank:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.classRank)}
@@ -96,6 +206,11 @@ export default function Page() {
                   setProfile({ ...profile, classRank: e.target.value })
                 }
               />
+              
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>Class Size:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.classSize)}
@@ -103,20 +218,39 @@ export default function Page() {
                   setProfile({ ...profile, classSize: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>School Name:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.school.name)}
                 onChange={(e) =>
-                  setProfile({ ...profile, school: { ...profile.school, name: e.target.value } })
+                  setProfile({
+                    ...profile,
+                    school: { ...profile.school, name: e.target.value },
+                  })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>School ID:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.school.id)}
                 onChange={(e) =>
-                  setProfile({ ...profile, school: { ...profile.school, id: e.target.value } })
+                  setProfile({
+                    ...profile,
+                    school: { ...profile.school, id: e.target.value },
+                  })
                 }
               />
+              
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>School Type:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.schoolType)}
@@ -124,6 +258,10 @@ export default function Page() {
                   setProfile({ ...profile, schoolType: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>School Location:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.schoolLocation)}
@@ -131,6 +269,10 @@ export default function Page() {
                   setProfile({ ...profile, schoolLocation: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>School Size:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.schoolSize)}
@@ -138,6 +280,10 @@ export default function Page() {
                   setProfile({ ...profile, schoolSize: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>SAT Score:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.satScore)}
@@ -145,6 +291,10 @@ export default function Page() {
                   setProfile({ ...profile, satScore: e.target.value })
                 }
               />
+              <br />
+              <label className="block mb-2 me-2">
+                <strong>ACT Score:</strong>
+              </label>
               <input
                 type="text"
                 value={String(profile.actScore)}
@@ -152,7 +302,10 @@ export default function Page() {
                   setProfile({ ...profile, actScore: e.target.value })
                 }
               />
-              <p><strong>AP Scores:</strong></p>
+              <br />
+              <p>
+                <strong>AP Scores:</strong>
+              </p>
               <ul>
                 {profile.apScores.map((score) => (
                   <li key={String(score.subject)}>
@@ -211,11 +364,73 @@ export default function Page() {
                 ))}
               </div>
 
-              {/* Add more fields as necessary */}
+              {/* Allow the user to manually add fields to the AP Scores */}
+              <div>
+                <h2 className="text-xl font-bold mb-2">Add AP Score</h2>
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  value={newApScore.subject}
+                  onChange={(e) =>
+                    setNewApScore({ ...newApScore, subject: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Score"
+                  value={newApScore.score}
+                  onChange={(e) =>
+                    setNewApScore({ ...newApScore, score: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Year"
+                  value={newApScore.year}
+                  onChange={(e) =>
+                    setNewApScore({ ...newApScore, year: e.target.value })
+                  }
+                />
+                <button
+                  className="btn btn-primary m-2"
+                  onClick={() => {
+                    setProfile({
+                      ...profile,
+                      apScores: [...profile.apScores, newApScore],
+                    });
+                    setNewApScore({ subject: "", score: "", year: "" });
+                  }}
+                >
+                  Add
+                </button>
+              </div>
+
+              {/* Save Button */}
+              <button
+                className="btn btn-primary m-2"
+                onClick={async () => {
+                  // Save profile changes
+                  const res = await fetch("/api/profile", {
+                    method: "PATCH",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(profile),
+                  });
+                  const data = await res.json();
+                  if (res.ok) {
+                    // Handle successful profile update
+                    console.log("Profile updated successfully:", data);
+                  } else {
+                    // Handle error
+                    console.error("Error updating profile:", data);
+                  }
+
+                }}
+              >
+                Save
+              </button>
             </div>
-          ) : (
-            <p>No profile data available.</p>
-          )}
         </div>
       )}
     </div>

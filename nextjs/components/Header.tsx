@@ -59,11 +59,11 @@ function Header() {
                   Essays
                 </a>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <a className="nav-link" href="/app/interview">
                   Interview
                 </a>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <a className="nav-link" href="/app/profile">
                   Profile

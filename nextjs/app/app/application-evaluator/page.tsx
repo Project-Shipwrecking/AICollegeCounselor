@@ -1,11 +1,35 @@
-import { Essay, Extracurriculars, Honors } from "@/types/user";
+import { Essay, Extracurriculars, Honors, user, Profile } from "@/types/user";
 import React, { useEffect } from "react";
 
+
 export default function Page() {
-  const [essays, setEssays] = React.useState([]);
-  const [extracurriculars, setExtracurriculars] = React.useState([]);
-  const [honors, setHonors] = React.useState([]);
-  const [profile, setProfile] = React.useState({});
+  const [essays, setEssays] = React.useState<Essay[]>([]);
+  const [extracurriculars, setExtracurriculars] = React.useState<Extracurriculars[]>([]);
+  const [honors, setHonors] = React.useState<Honors[]>([]);
+  const [profile, setProfile] = React.useState<Profile>(
+    {
+      graduationYear: "",
+      gender: "",
+      race: "",
+      state: "",
+      country: "",
+      unweightedGPA: "",
+      weightedGPA: "",
+      classRank: "",
+      classSize: "",
+      school: {
+        name: "",
+        id: "",
+      },
+      schoolType: "",
+      schoolLocation: "",
+      schoolSize: "",
+      satScore: "",
+      actScore: "",
+      apScores: [],
+    }
+  );
+  const [userData, setUserData] = React.useState<user | {}>({});
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
@@ -44,11 +68,11 @@ export default function Page() {
       const response = await fetch("/api/application/profile");
       if (!response.ok) {
         console.error("Failed to fetch profile");
-        setProfile({});
         return;
       }
       const data = await response.json();
-      setProfile(data);
+      setProfile(data.profile);
+      setUserData(data);
     };
     Promise.all([
       fetchEssays(),
@@ -68,11 +92,45 @@ export default function Page() {
     );
   }
 
-
-
   return (
     <div className="container mx-auto py-4">
       <h1 className="text-2xl font-bold mb-4">Application Evaluator</h1>
+    
+    <div id="profile">
+      <h2 className="text-xl font-bold mb-2">Profile</h2>
+      <div className="mb-4">
+        <p><strong>Graduation Year:</strong> {profile.graduationYear || ""}</p>
+        <p><strong>Gender:</strong> {profile.gender || ""}</p>
+        <p><strong>Race:</strong> {profile.race || ""}</p>
+        <p><strong>State:</strong> {profile.state || ""}</p>
+        <p><strong>Country:</strong> {profile.country || ""}</p>
+        <p><strong>Unweighted GPA:</strong> {profile.unweightedGPA || ""}</p>
+        <p><strong>Weighted GPA:</strong> {profile.weightedGPA || ""}</p>
+        <p><strong>Class Rank:</strong> {profile.classRank || ""}</p>
+        <p><strong>Class Size:</strong> {profile.classSize || ""}</p>
+        <p><strong>School Name:</strong> {profile.school.name || ""}</p>
+        <p><strong>School ID:</strong> {profile.school.id || ""}</p>
+        <p><strong>School Type:</strong> {profile.schoolType || ""}</p>
+        <p><strong>School Location:</strong> {profile.schoolLocation || ""}</p>
+        <p><strong>School Size:</strong> {profile.schoolSize || ""}</p>
+      </div>
+      <div className="mb-4">
+        <p><strong>SAT Score:</strong> {profile.satScore || ""}</p>
+        <p><strong>ACT Score:</strong> {profile.actScore || ""}</p>
+        <h3 className="text-lg font-bold">AP Scores</h3>
+        {profile.apScores && profile.apScores.length > 0 ? (
+          profile.apScores.map((score, index) => (
+            <div key={index}>
+              <p><strong>Subject:</strong> {score.subject || ""}</p>
+              <p><strong>Score:</strong> {score.score || ""}</p>
+              <p><strong>Year:</strong> {score.year || ""}</p>
+            </div>
+          ))
+        ) : (
+          <p>No AP scores available.</p>
+        )}
+      </div>
+    </div>
     {/* Put a checkbox for each Essay, Extracurricular, and Honor, with a select all button for each. */}
     <div id="essays">
       <h2 className="text-xl font-bold mb-2">Essays</h2>

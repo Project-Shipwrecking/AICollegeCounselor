@@ -7,7 +7,7 @@ const db = process.env.MONGODB_DB as string;
 const client = new MongoClient(uri);
 
 export async function GET(request: Request) {
-  const token = await getToken({ req: request });
+  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
   if (!token) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -33,7 +33,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const token = await getToken({ req: request });
+  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
   if (!token) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -67,15 +67,15 @@ export async function POST(request: Request) {
  * @returns
  */
 export async function PATCH(request: Request) {
-  const token = await getToken({ req: request });
+  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
   if (!token) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const data = await request.json();
-  if (!data || !data.name || !data.email) {
+  if (!data) {
     return NextResponse.json(
-      { error: "Name and email are required" },
+      { error: "Profile data is required" },
       { status: 400 }
     );
   }
@@ -83,12 +83,12 @@ export async function PATCH(request: Request) {
   await client.connect();
   const database = client.db(db);
   const profile = await database
-    .collection("profiles")
-    .findOne({ userId: token.sub });
+    .collection("users")
+    .findOne({ id: token.sub });
   if (!profile) {
     return NextResponse.json({ error: "Profile not found" }, { status: 404 });
   }
-  await database.collection("profiles").updateOne(
+  await database.collection("users").updateOne(
     { id: token.sub },
     {
       $set: {
