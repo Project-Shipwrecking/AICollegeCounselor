@@ -257,6 +257,11 @@ export default function Page() {
       <button
       className="btn btn-primary mt-4 mb-2"
         onClick={async () => {
+          const prompt = `You are a College Admissions Counselor AI. Based on the user's application data, identify areas for improvement and provide suggestions. The user has provided the following information:
+          \nEssays: ${essays.map((essay) => `${essay.name}:\n${essay.content}`).join(", ")}
+          \nExtracurriculars: ${extracurriculars.map((ec) => `${ec.name}`).join(", ")}
+          \nHonors: ${honors.map((honor) => `${honor.name}`).join(", ")}
+          \nProfile: ${Object.keys(profile).map((key) => `${key}: ${profile[key as keyof Profile]}`).join("\n")}`;
           const response = await fetch("https://ai.hackclub.com/chat/completions", {
             method: "POST",
             headers: {
@@ -266,8 +271,8 @@ export default function Page() {
               model: "gpt-4",
               messages: [
                 {
-                  role: "user",
-                  content: "What are some good extracurricular activities for college applications?",
+                  role: "system",
+                  content: prompt,
                 },
               ],
             }),
