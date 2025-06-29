@@ -67,7 +67,7 @@ export default function Page() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/api/application/profile");
+        const response = await fetch("/api/profile");
         if (!response.ok) {
           throw new Error("Failed to fetch profile");
         }

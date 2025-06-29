@@ -32,6 +32,12 @@ async function convertToCSV() {
       costAfterAid: entry.searchData.costAfterAid,
       percentReceivingAid: entry.searchData.percentReceievingAid,
       acceptanceRate: entry.searchData.acceptanceRate,
+      rankingSortRank: entry.rankingSortRank,
+      thumb: entry.photos?.thumb || null,
+      medium: entry.photos?.medium || null,
+      large: entry.photos?.large || null,
+      small: entry.photos?.small || null,
+
       // hsGpaAvg: entry.searchData.hsGpaAvg,
       // satAvg: entry.searchData.satAvg,
       // actAvg: entry.searchData.actAvg,

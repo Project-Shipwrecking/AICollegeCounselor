@@ -16,7 +16,7 @@ export async function GET(request: Request) {
   await client.connect();
   const database = client.db(db);
   const profile = await database
-    .collection("profiles")
+    .collection("users")
     .findOne({ userId: token.sub });
 
   if (profile && profile.password) {
@@ -39,9 +39,9 @@ export async function POST(request: Request) {
   }
 
   const data = await request.json();
-  if (!data || !data.name || !data.email) {
+  if (!data) {
     return NextResponse.json(
-      { error: "Name and email are required" },
+      { error: "Profile data is required" },
       { status: 400 }
     );
   }
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
   const profile = await request.json();
 
   await database
-    .collection("profiles")
+    .collection("users")
     .updateOne({ id: token.sub }, { $set: profile }, { upsert: true });
   await client.close();
   return NextResponse.json(
@@ -100,7 +100,11 @@ export async function PATCH(request: Request) {
       },
     }
   );
+  console.log(await database
+    .collection("users")
+    .findOne({ id: token.sub }));
   await client.close();
+
   return NextResponse.json(
     { message: "Profile updated successfully" },
     { status: 200 }

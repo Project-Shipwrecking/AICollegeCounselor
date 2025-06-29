@@ -38,7 +38,17 @@ async function main() {
         // description: college.description,
         tuition: typeof college.tuition === "number" ? college.tuition : undefined,
         enrollment: typeof college.enrollment === "number" ? college.enrollment : undefined,
-        acceptanceRate: college.acceptanceRate
+        acceptanceRate: college.acceptanceRate,
+        usNewsOverallRank: college.rankingSortRank,
+        photos: {
+          thumb: college.photos?.thumb || null,
+          medium: college.photos?.medium || null,
+          large: college.photos?.large || null,
+          small: college.photos?.small || null,
+        },
+        satAverage: college.testAvgs?.sat || null,
+        actAverage: college.testAvgs?.act || null,
+
         // Add more mappings as needed
       }));
 

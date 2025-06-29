@@ -30,8 +30,8 @@ async function scrapeIndividualSchools() {
           city: item.institution.city,
           zip: item.institution.zip,
         },
+        rankingSortRank: item.institution.rankingSortRank,
         type: item.institution.institutionalControl,
-
         searchData: {
           tuition: item.searchData.tuition.rawValue,
           enrollment: {
@@ -66,6 +66,12 @@ async function scrapeIndividualSchools() {
             )[0]?.value || null,
         },
         description: item.blurb,
+        photos: {
+          thumb: item.institution.primaryPhotoThumb,
+          medium: item.institution.primaryPhotoMedium,
+          large: item.institution.primaryPhotoCardLarge,
+          small: item.institution.primaryPhotoCardSmall,
+        }
       };
 
       const outputFile = path.join(outputFolder, `${entry.id}.json`);
