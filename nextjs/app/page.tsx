@@ -24,7 +24,9 @@ function SignOut({ children }: { children: React.ReactNode }) {
       }}
     >
       <p>{children}</p>
-      <button type="submit" className="btn mt-2 bg-danger text-light">Sign out</button>
+      <button type="submit" className="btn mt-2 bg-danger text-light">
+        Sign out
+      </button>
     </form>
   );
 }
@@ -47,7 +49,7 @@ export default async function Page() {
   let user = session?.user?.name;
   console.log(session);
 
-  return (      
+  return (
     <div className="container m-4">
       {/* <h1>Hello</h1> */}
       <div className="mt-4">
