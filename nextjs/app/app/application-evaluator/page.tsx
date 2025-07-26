@@ -1,6 +1,7 @@
 "use client";
 import { Essay, Extracurriculars, Honors, user, Profile } from "@/types/user";
 import React, { useEffect } from "react";
+import { SimpleMarkdown } from '@/components/SimpleMarkdown';
 
 export default function Page() {
   const [essays, setEssays] = React.useState<Essay[]>([]);
@@ -101,7 +102,7 @@ export default function Page() {
 
       <div id="profile">
         <h2 className="text-xl font-bold mb-2">Profile</h2>
-        <sub className="text-gray-500">To edit, go to <a href="/application-manager" className="text-blue-500">Profile</a></sub>
+        <sub className="text-gray-500">To edit, go to <a href="/app/application-manager" className="text-blue-500">Profile</a></sub>
         <div className="mb-4">
           <p>
             <strong>Graduation Year:</strong> {profile.graduationYear || ""}
@@ -280,6 +281,7 @@ export default function Page() {
               ],
             }),
           });
+
           const data = await response.json();
 
           if(data.hasOwnProperty('error')) {
@@ -298,7 +300,7 @@ export default function Page() {
         <h2 className="text-xl font-bold mb-2">Suggestion</h2>
         {suggestion ? (
           <div className="border p-4 rounded">
-            <p>{suggestion}</p>
+            <SimpleMarkdown>{suggestion}</SimpleMarkdown>
           </div>
         ) : (
           <p>No suggestions available.</p>

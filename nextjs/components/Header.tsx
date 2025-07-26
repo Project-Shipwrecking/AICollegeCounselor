@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import { text } from "stream/consumers";
-// import { auth, signIn, signOut } from "@/auth";
 
 function Header() {
   const [isAdmin, setIsAdmin] = React.useState(false);
@@ -34,7 +32,7 @@ function Header() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item m-1">
+              <li className="nav-item">
                 <a className="nav-link" href="/app/application-evaluator">
                   Application Evaluator
                 </a>
@@ -59,19 +57,9 @@ function Header() {
                   Essays
                 </a>
               </li>
-              {/* <li className="nav-item">
-                <a className="nav-link" href="/app/interview">
-                  Interview
-                </a>
-              </li> */}
               <li className="nav-item">
                 <a className="nav-link" href="/app/profile">
                   Profile
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/app/scholarship-search">
-                  Scholarship Search
                 </a>
               </li>
               {isAdmin && (

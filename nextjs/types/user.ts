@@ -1,7 +1,7 @@
 export type user = {
-  username: String;
-  password: String;
-  id: String;
+  username: string;
+  password: string;
+  id: string;
   admin: boolean;
   application: {
     essays: Essay[];
@@ -12,53 +12,53 @@ export type user = {
 };
 
 export type Profile = {
-  graduationYear: String;
-  gender: String;
-  race: String;
-  state: String;
-  country: String;
-  unweightedGPA: String;
-  weightedGPA: String;
-  classRank: String;
-  classSize: String;
+  graduationYear: string;
+  gender: string;
+  race: string;
+  state: string;
+  country: string;
+  unweightedGPA: string;
+  weightedGPA: string;
+  classRank: string;
+  classSize: string;
   school: {
-    name: String;
-    id: String; // uuid
+    name: string;
+    id: string; // uuid
   };
-  schoolType: "public" | "private" | "charter" | "homeschool" | String;
-  schoolLocation: "urban" | "suburban" | "rural" | String;
-  schoolSize: "small" | "medium" | "large" | String;
+  schoolType: "public" | "private" | "charter" | "homeschool" | string;
+  schoolLocation: "urban" | "suburban" | "rural" | string;
+  schoolSize: "small" | "medium" | "large" | string;
 
-  satScore: String;
-  actScore: String;
+  satScore: string;
+  actScore: string;
   apScores: APScore[];
 };
 
 export type APScore = {
-  subject: String;
-  score: String;
-  year: String;
+  subject: string;
+  score: string;
+  year: string;
 };
 
 /**
  * Includes Supplementals
  */
 export type Essay = {
-  id: String | number;
-  name: String;
-  prompt: String;
+  id: string | number;
+  name: string;
+  prompt: string;
   wordCount: Number;
-  year: String;
+  year: string;
   school: null | {
-    name: String;
-    id: String;
+    name: string;
+    id: string;
   };
-  content: String;
+  content: string;
 };
 
 export type Extracurriculars = {
-  name: String;
-  id: String; // uuid
+  name: string;
+  id: string; // uuid
   type:
     | "sport"
     | "club"
@@ -68,17 +68,17 @@ export type Extracurriculars = {
     | "summer program"
     | "job"
     | "intern"
-    | String;
-  leadershipPosition: String;
-  years: String;
-  hoursPerYear: String;
-  impact: String;
+    | string;
+  leadershipPosition: string;
+  years: number;
+  hoursPerYear: number;
+  impact: string;
 };
 
 export type Honors = {
-  name: String;
-  grade: String;
-  id: String; // uuid
+  name: string;
+  grade: string;
+  id: string; // uuid
   recognition:
     | "international"
     | "national"
@@ -86,5 +86,5 @@ export type Honors = {
     | "regional"
     | "city"
     | "school"
-    | String;
+    | string;
 };

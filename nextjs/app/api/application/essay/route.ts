@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+
 export async function POST(req: NextRequest) {
     // upserts a single essay for the user
     try {
