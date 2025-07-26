@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import 'bootstrap';
-// import 'bootstrap'
 
 export default function SignupPage() {
     const [form, setForm] = useState({ username: '', password: '' });

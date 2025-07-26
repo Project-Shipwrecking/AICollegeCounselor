@@ -3,6 +3,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import type { CollegeBasicData } from "@/types/college";
+import Image from "next/image";
 
 export default function Page() {
   const [limit, setLimit] = useState(25);
@@ -62,23 +63,25 @@ export default function Page() {
               className="btn btn-primary"
               type="button"
               onClick={() => {
-                const input = document.getElementById(
-                  "college-search-input"
-                ) as HTMLInputElement | null;
-                const value = input?.value ?? "";
-                setLoading(true);
-                setPage(1);
-                fetch(
-                  `/api/college-database/colleges?search=${encodeURIComponent(
-                    value
-                  )}&page=1&limit=${limit}`
-                )
-                  .then((res) => res.json())
-                  .then((data) => {
-                    setColleges(data);
-                    setLoading(false);
-                  })
-                  .catch(() => setLoading(false));
+                if (typeof document !== "undefined") {
+                  const input = document.getElementById(
+                    "college-search-input"
+                  ) as HTMLInputElement | null;
+                  const value = input?.value ?? "";
+                  setLoading(true);
+                  setPage(1);
+                  fetch(
+                    `/api/college-database/colleges?search=${encodeURIComponent(
+                      value
+                    )}&page=1&limit=${limit}`
+                  )
+                    .then((res) => res.json())
+                    .then((data) => {
+                      setColleges(data);
+                      setLoading(false);
+                    })
+                    .catch(() => setLoading(false));
+                }
               }}
             >
               Search
@@ -90,7 +93,7 @@ export default function Page() {
       <br />
 
       <div className="container bg-white py-1 rounded">
-        <div className='row'>
+        <div className="row">
           {colleges.map((college, idx) => (
             // Turn into a grid of cards
             // Use Bootstrap classes for responsive design
@@ -103,11 +106,21 @@ export default function Page() {
                     {college.location}
                   </h6>
                   <p className="card-text mb-2">
-                    <strong>Type:</strong> {college.type?.toLowerCase().split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ") || "N/A"}
+                    <strong>Type:</strong>{" "}
+                    {college.type
+                      ?.toLowerCase()
+                      .split(" ")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ") || "N/A"}
                     <br />
-                    <strong>Tuition:</strong> ${college.tuition?.toLocaleString() ?? "N/A"}
+                    <strong>Tuition:</strong>
+                    {" $"}
+                    {college.tuition?.toLocaleString() ?? "N/A"}
                     <br />
-                    <strong>Enrollment:</strong> {college.enrollment?.toLocaleString() ?? "N/A"}
+                    <strong>Enrollment:</strong>{" "}
+                    {college.enrollment?.toLocaleString() ?? "N/A"}
                     <br />
                     <strong>Acceptance Rate:</strong>{" "}
                     {college.acceptanceRate != null
@@ -116,10 +129,12 @@ export default function Page() {
                   </p>
                   {/* add image */}
                   {college.photos?.medium && (
-                    <img
+                    <Image
                       src={String(college.photos.large)}
                       className="card-img-top"
                       alt={`${college.name} image`}
+                      width={400} // Adjust width as needed
+                      height={200} // Adjust height as needed
                       style={{ maxHeight: "200px", objectFit: "cover" }}
                     />
                   )}

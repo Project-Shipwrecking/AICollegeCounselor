@@ -42,10 +42,8 @@ export async function GET(req: NextRequest) {
     // let pipeline: any[] = [];
 
     if (searchQuery) {
-      // Try to use $search, but if it fails, fallback to regex search
-      let colleges;
       // Fallback to regex search if $search fails
-      colleges = await db
+      const colleges = await db
         .collection("colleges")
         .find({ name: { $regex: searchQuery, $options: "i" } })
         .sort({ usNewsOverallRank: 1 })
@@ -54,7 +52,6 @@ export async function GET(req: NextRequest) {
         .toArray();
       return NextResponse.json(colleges);
     }
-// How can I make sure that usNewsOverallRank is positive?
 
     const colleges = await db
       .collection("colleges")

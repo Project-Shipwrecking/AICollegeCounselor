@@ -13,12 +13,12 @@ export async function GET(req: NextRequest) {
   const users = db.collection("users");
   
   if(!session?.user?.id) {
-    return NextResponse.json(false)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
   const user = await users.findOne({ id: session?.user?.id });
   
-  if(!user) return false;
+  if(!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const isAdmin = user.admin === true;
 
   return NextResponse.json(isAdmin);

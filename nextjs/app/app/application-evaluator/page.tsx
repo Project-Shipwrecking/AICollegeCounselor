@@ -29,7 +29,7 @@ export default function Page() {
     actScore: "",
     apScores: [],
   });
-  const [userData, setUserData] = React.useState<user | {}>({});
+  const [userData, setUserData] = React.useState<user>({} as user);
   const [loading, setLoading] = React.useState(true);
 
   // AI Suggestions
@@ -181,6 +181,7 @@ export default function Page() {
           onClick={(e) => {
             // get all checkboxes that are children of this button's parent
             e.preventDefault();
+            if (typeof document === "undefined") return;
             const checkboxes = document
               .getElementById("essays")
               ?.querySelectorAll("input[type='checkbox']");
@@ -192,8 +193,8 @@ export default function Page() {
         >
           Select All
         </button>
-        {essays.map((essay: Essay) => (
-          <div>
+        {essays.map((essay: Essay, key) => (
+          <div key={key} className="mb-2">
             <input type="checkbox" id={`essay-${essay.id}`} />
             <label htmlFor={`essay-${essay.id}`}>{essay.name}</label>
           </div>
@@ -205,6 +206,7 @@ export default function Page() {
           className="mb-2 btn btn-primary"
           onClick={(e) => {
             e.preventDefault();
+            if(typeof document === "undefined") return;
             const checkboxes = document
               .getElementById("extracurriculars")
               ?.querySelectorAll("input[type='checkbox']");
@@ -216,8 +218,8 @@ export default function Page() {
         >
           Select All
         </button>
-        {extracurriculars.map((extracurricular: Extracurriculars) => (
-          <div>
+        {extracurriculars.map((extracurricular: Extracurriculars, key) => (
+          <div key={key} className="mb-2">
             <input
               type="checkbox"
               id={`extracurricular-${extracurricular.id}`}
@@ -234,6 +236,7 @@ export default function Page() {
           className="mb-2 btn btn-primary"
           onClick={(e) => {
             e.preventDefault();
+            if (typeof document === "undefined") return;
             const checkboxes = document
               .getElementById("honors")
               ?.querySelectorAll("input[type='checkbox']");
@@ -245,8 +248,8 @@ export default function Page() {
         >
           Select All
         </button>
-        {honors.map((honor: Honors) => (
-          <div>
+        {honors.map((honor: Honors, key) => (
+          <div key={key} className="mb-2">
             <input type="checkbox" id={`honor-${honor.id}`} />
             <label htmlFor={`honor-${honor.id}`}>{honor.name}</label>
           </div>

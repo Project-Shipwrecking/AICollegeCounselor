@@ -7,8 +7,8 @@ const dbName = process.env.MONGODB_DB as string;
 const client = new MongoClient(uri);
 
 type ApproveReqBody = {
-    id: String,
-    edit: Boolean,
+    id: string,
+    edit: boolean,
     edits: any
 }
 
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
   const collection = db.collection("cds_queue");
   const data: ApproveReqBody = await req.json();
-  let doc = await collection.findOne({ id: data.id });
+  const doc = await collection.findOne({ id: data.id });
   if (doc) {
     await collection.deleteOne({ id: data.id });
     await client.close();

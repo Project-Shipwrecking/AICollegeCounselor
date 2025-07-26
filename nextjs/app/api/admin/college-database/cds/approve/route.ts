@@ -7,8 +7,8 @@ const dbName = process.env.MONGODB_DB as string;
 const client = new MongoClient(uri);
 
 type ApproveReqBody = {
-    id: String,
-    edit: Boolean,
+    id: string,
+    edit: boolean,
     edits: any
 }
 
