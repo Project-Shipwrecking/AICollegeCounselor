@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 import { getToken } from "next-auth/jwt";
+import { Honors } from "@/types/user";
 
 
 const uri = process.env.MONGODB_URI as string;
@@ -44,7 +45,7 @@ export async function PUT(req: NextRequest) {
         }
 
         const data = await req.json();
-        if (!data || !data.honors) {
+        if (!data || !data.honor) {
             return NextResponse.json({ error: "Honors data is required." }, { status: 400 });
         }
 
@@ -62,9 +63,22 @@ export async function PUT(req: NextRequest) {
         }
 
         // Update the user's honors
+
+        const honors  = user.application.honors || [];
+
+        const exists = honors.some((h: Honors) => h.id === data.honor.id);
+
+        let newHonors: Honors[] = [];
+
+        if (exists) {
+            newHonors = honors.map((h: Honors) => (h.id === data.honor.id ? data.honor : h));
+        } else {
+            newHonors = [...honors, data.honor];
+        }
+
         await collection.updateOne(
             { id: token.sub },
-            { $set: { "application.honors": data.honors } }
+            { $set: { "application.honors": newHonors } }
         );
 
         await client.close();

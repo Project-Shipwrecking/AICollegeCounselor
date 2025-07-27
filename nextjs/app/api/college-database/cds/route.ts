@@ -48,25 +48,33 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
     try {
-        const { searchParams } = new URL(req.url);
-        const id = searchParams.get('id');
-        if (!id) {
-            return NextResponse.json({ error: 'Missing id parameter' }, { status: 400 });
-        }
-
+        const searchQuery = req.nextUrl.searchParams.get('q');
+        
         const client = new MongoClient(uri);
         await client.connect();
         const db = client.db(dbName);
         const collection = db.collection('cds_queue');
-        const cds = await collection.findOne({ id });
+        
+        let cdsItems;
+        if (searchQuery) {
+            // Search for items matching the query in the name field
+            cdsItems = await collection.find({
+            name: { $regex: searchQuery, $options: 'i' }
+            }).toArray();
+        } else {
+            // Get 10 random documents from the collection if no search query
+            cdsItems = await collection.aggregate([
+            { $sample: { size: 10 } }
+            ]).toArray();
+        }
 
         await client.close();
 
-        if (!cds) {
-            return NextResponse.json({ error: 'CDS not found' }, { status: 404 });
+        if (!cdsItems || cdsItems.length === 0) {
+            return NextResponse.json({ error: 'No CDS items found' }, { status: 404 });
         }
 
-        return NextResponse.json({ data: cds }, { status: 200 });
+        return NextResponse.json({ data: cdsItems }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }

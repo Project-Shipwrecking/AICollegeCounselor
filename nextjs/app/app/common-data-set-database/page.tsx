@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import { dropTargetForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
 
@@ -14,12 +14,31 @@ export default function Page() {
   "use client";
   const [dragActive, setDragActive] = React.useState(false);
   const [fileName, setFileName] = React.useState<string | null>(null);
+  const [data, setData] = React.useState<any[]>([]);
+  const [query, setQuery] = React.useState("");
   const dropRef = React.useRef<HTMLDivElement>(null);
+  
 
   const { data: session, status } = useSession();
   const isAuthenticated = !!session;
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const url = query 
+        ? `/api/college-database/cds?search=${encodeURIComponent(query)}` 
+        : "/api/college-database/cds";
+      const response = await fetch(url);
+      if (!response.ok) {
+        console.error("Failed to fetch data");
+        return;
+      }
+      const data = await response.json();
+      setData(data);
+    };
+    fetchData();
+  }, [query]);
+
+  useEffect(() => {
     if (!dropRef.current) return;
     const dropTarget = dropTargetForExternal({
       element: dropRef.current,
@@ -61,6 +80,29 @@ export default function Page() {
         </p>
 
         <br />
+
+        <div className="bg-light rounded p-3 mb-3">
+          <h2 className="text-lg font-semibold mb-2">Search Colleges</h2>
+          <div className="flex gap-4 mb-3">
+            <input
+              type="text"
+              placeholder="Search by college name..."
+              className="border rounded p-2 flex-1"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+              }}
+            />
+            <button 
+              className="bg-blue-600 text-primary rounded px-4 py-2"
+              onClick={() => {
+                setQuery("");
+              }}
+            >
+              Reset
+            </button>
+          </div>
+        </div>
         {/* Fields to have: Name, type (Liberal Arts vs Universities), Acceptance Rate, Deadlines, Whether it accepts EA, ED, RD, SCEA, Rolling, Test Policy (Blind, Option, Mandatory), GPA/ACT/SAT (25%/50%/75%), Letter of Rec) */}
         <Paper sx={{ height: 400, width: "100%" }}>
           <DataGrid
@@ -68,75 +110,75 @@ export default function Page() {
               {
                 field: "name",
                 headerName: "Name",
-                width: 70,
+                width: 150,
               },
               {
                 field: "acceptanceRate",
                 headerName: "Acceptance Rate",
-                width: 70,
+                width: 150,
               },
               {
                 field: "applicationType",
                 headerName: "Application Type",
-                width: 70,
+                width: 150,
               },
               {
                 field: "testPolicy",
                 headerName: "Test Policy",
-                width: 70,
+                width: 125,
               },
               {
                 field: "gpa25",
-                headerName: "25%",
-                width: 30,
+                headerName: "GPA 25%",
+                width: 75,
                 valueGetter: (value, row) => `${row.gpa["25"] || ""}`,
               },
               {
                 field: "gpa50",
-                headerName: "50%",
-                width: 30,
+                headerName: "GPA 50%",
+                width: 75,
                 valueGetter: (value, row) => `${row.gpa["50"] || ""}`,
               },
               {
                 field: "gpa75",
-                headerName: "75%",
-                width: 30,
+                headerName: "GPA 75%",
+                width: 75,
                 valueGetter: (value, row) => `${row.gpa["75"] || ""}`,
               },
               {
                 field: "sat25",
-                headerName: "25%",
-                width: 30,
+                headerName: "SAT 25%",
+                width: 75,
                 valueGetter: (value, row) => `${row.sat["25"] || ""}`,
               },
               {
                 field: "sat50",
-                headerName: "50%",
-                width: 30,
+                headerName: "SAT 50%",
+                width: 75,
                 valueGetter: (value, row) => `${row.sat["50"] || ""}`,
               },
               {
                 field: "sat75",
-                headerName: "75%",
-                width: 30,
+                headerName: "SAT 75%",
+                width: 75,
                 valueGetter: (value, row) => `${row.sat["75"] || ""}`,
               },
               {
                 field: "act25",
-                headerName: "25%",
-                width: 30,
+                headerName: "ACT 25%",
+                width: 75,
                 valueGetter: (value, row) => `${row.act["25"] || ""}`,
               },
               {
                 field: "act50",
-                headerName: "50%",
-                width: 30,
+                headerName: "ACT 50%",
+                width: 75,
                 valueGetter: (value, row) => `${row.act["50"] || ""}`,
               },
               {
                 field: "act75",
-                headerName: "75%",
-                width: 30,
+                headerName: "ACT 75%",
+                width: 75,
                 valueGetter: (value, row) => `${row.act["75"] || ""}`,
               },
               {

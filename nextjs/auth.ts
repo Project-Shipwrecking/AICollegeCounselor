@@ -21,8 +21,8 @@ export const {
       }
     },
     async authorize(credentials, req) {
-      console.log(credentials)
-      console.log(req)
+      // console.log(credentials)
+      // console.log(req)
     
       const res = await fetch(`${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/login`, {
         method: 'POST',
@@ -31,7 +31,7 @@ export const {
       })
       const user = await res.json();
 
-      console.log(user)
+      // console.log(user)
 
       // user.email = user.username;
       user.name = user.username;
