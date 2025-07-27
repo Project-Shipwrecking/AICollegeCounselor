@@ -27,7 +27,7 @@ export default function Page() {
       console.log(data);
     };
     fetchData();
-  }, []);
+  });
 
   useEffect(() => {
     const fetchEssays = async () => {

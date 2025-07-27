@@ -14,7 +14,7 @@ function SignIn() {
   );
 }
 
-function SignOut({ children }: { children: React.ReactNode }) {
+function SignOut() {
   return (
     <form
       action={async () => {
@@ -22,7 +22,6 @@ function SignOut({ children }: { children: React.ReactNode }) {
         await signOut();
       }}
     >
-      <p>{children}</p>
       <button type="submit" className="btn mt-2 bg-danger text-light">
         Sign out
       </button>
@@ -61,7 +60,7 @@ export default async function Page() {
               
               {user ? (
                 <div className="text-center p-4 bg-light rounded-3">
-                  <SignOut children={undefined}/>
+                  <SignOut />
                 </div>
               ) : (
                 <div className="p-4 bg-light rounded-3">
