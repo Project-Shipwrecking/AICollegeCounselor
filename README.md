@@ -1,6 +1,8 @@
 # AI College Counselor
 
-Yeah, Yeah, I Know. Yet another AI college essay writer.
+Yeah, Yeah, I Know. Yet another one of these sites.
+
+<img src="assets\screenshot.png">
 
 ## Features
 
