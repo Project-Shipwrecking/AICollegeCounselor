@@ -85,6 +85,7 @@ export const {
             return {
               name: user.username,
               id: user.id,
+              email: user.email,
             };
           }
           // Return null if user data could not be retrieved
@@ -97,11 +98,12 @@ export const {
     }),
   ],
   callbacks: {
-    // jwt({ token, user, account, profile, trigger, session}) {
-    //   return {
-    //     ...token,
-    //   }
-    // },
+    jwt({ token, user, account, profile, trigger, session}) {
+      return {
+        ...token,
+        sub: user?.id || token.sub,
+      }
+    },
     session({ session, user, token }) {
       console.log("User:");
       console.log(user);
@@ -109,7 +111,7 @@ export const {
       console.log(session);
       console.log("Token:");
       console.log(token);
-      session.user.id = token?.sub || "";
+      session.user.id = token?.sub || user?.id;
       return session;
     },
   },
