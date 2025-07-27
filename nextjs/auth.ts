@@ -37,7 +37,7 @@ export const {
           console.log(credentials);
           console.log(req);
           const res = await fetch(
-            `${process.env.VERCEL_URL || "http://localhost:3000"}/api/login`,
+            `${("https://" + process.env.VERCEL_URL) || "http://localhost:3000"}/api/login`,
             {
               method: "POST",
               body: JSON.stringify(credentials),
