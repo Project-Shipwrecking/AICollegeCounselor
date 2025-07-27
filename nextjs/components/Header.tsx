@@ -34,6 +34,16 @@ function Header() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
+                <a className="nav-link" href="/app/college-search">
+                  College Search
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/app/essays">
+                  Essays
+                </a>
+              </li>
+              <li className="nav-item">
                 <a className="nav-link" href="/app/application-evaluator">
                   Application Evaluator
                 </a>
@@ -44,18 +54,8 @@ function Header() {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/app/college-search">
-                  College Search
-                </a>
-              </li>
-              <li className="nav-item">
                 <a className="nav-link" href="/app/common-data-set-database">
                   Common Data Set Database
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/app/essays">
-                  Essays
                 </a>
               </li>
               <li className="nav-item">
