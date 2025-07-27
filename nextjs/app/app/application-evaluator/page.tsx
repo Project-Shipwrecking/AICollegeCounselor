@@ -1,7 +1,7 @@
 "use client";
 import { Essay, Extracurriculars, Honors, user, Profile } from "@/types/user";
 import React, { useEffect } from "react";
-import { SimpleMarkdown } from '@/components/SimpleMarkdown';
+import { SimpleMarkdown } from "@/components/SimpleMarkdown";
 
 export default function Page() {
   const [essays, setEssays] = React.useState<Essay[]>([]);
@@ -102,7 +102,12 @@ export default function Page() {
 
       <div id="profile">
         <h2 className="text-xl font-bold mb-2">Profile</h2>
-        <sub className="text-gray-500">To edit, go to <a href="/app/application-manager" className="text-blue-500">Profile</a></sub>
+        <sub className="text-gray-500">
+          To edit, go to{" "}
+          <a href="/app/profile" className="text-blue-500">
+            Profile
+          </a>
+        </sub>
         <div className="mb-4">
           <p>
             <strong>Graduation Year:</strong> {profile.graduationYear || ""}
@@ -194,12 +199,16 @@ export default function Page() {
         >
           Select All
         </button>
-        {essays.map((essay: Essay, key) => (
-          <div key={key} className="mb-2">
-            <input type="checkbox" id={`essay-${essay.id}`} />
-            <label htmlFor={`essay-${essay.id}`}>{essay.name}</label>
-          </div>
-        ))}
+        {essays.length > 0 ? (
+          essays.map((essay: Essay, key) => (
+            <div key={key} className="mb-2">
+              <input type="checkbox" id={`essay-${essay.id}`} />
+              <label htmlFor={`essay-${essay.id}`}>{essay.name}</label>
+            </div>
+          ))
+        ) : (
+          <p>No essays found.</p>
+        )}
       </div>
       <div id="extracurriculars">
         <h2 className="text-xl font-bold mb-2">Extracurriculars</h2>
@@ -207,7 +216,7 @@ export default function Page() {
           className="mb-2 btn btn-primary"
           onClick={(e) => {
             e.preventDefault();
-            if(typeof document === "undefined") return;
+            if (typeof document === "undefined") return;
             const checkboxes = document
               .getElementById("extracurriculars")
               ?.querySelectorAll("input[type='checkbox']");
@@ -219,72 +228,89 @@ export default function Page() {
         >
           Select All
         </button>
-        {extracurriculars.map((extracurricular: Extracurriculars, key) => (
-          <div key={key} className="mb-2">
-            <input
-              type="checkbox"
-              id={`extracurricular-${extracurricular.id}`}
-            />
-            <label htmlFor={`extracurricular-${extracurricular.id}`}>
-              {extracurricular.name}
-            </label>
-          </div>
-        ))}
+        {extracurriculars.length > 0 ? (
+          extracurriculars.map((extracurricular: Extracurriculars, key) => (
+            <div key={key} className="mb-2">
+              <input
+                type="checkbox"
+                id={`extracurricular-${extracurricular.id}`}
+              />
+              <label htmlFor={`extracurricular-${extracurricular.id}`}>
+                {extracurricular.name}
+              </label>
+            </div>
+          ))
+        ) : (
+          <p>No extracurriculars found.</p>
+        )}
       </div>
       <div id="honors">
         <h2 className="text-xl font-bold mb-2">Honors</h2>
         <button
           className="mb-2 btn btn-primary"
           onClick={(e) => {
-            e.preventDefault();
-            if (typeof document === "undefined") return;
-            const checkboxes = document
-              .getElementById("honors")
-              ?.querySelectorAll("input[type='checkbox']");
-            if (!checkboxes) return;
-            checkboxes.forEach((checkbox) => {
-              (checkbox as HTMLInputElement).checked = true;
-            });
+        e.preventDefault();
+        if (typeof document === "undefined") return;
+        const checkboxes = document
+          .getElementById("honors")
+          ?.querySelectorAll("input[type='checkbox']");
+        if (!checkboxes) return;
+        checkboxes.forEach((checkbox) => {
+          (checkbox as HTMLInputElement).checked = true;
+        });
           }}
         >
           Select All
         </button>
-        {honors.map((honor: Honors, key) => (
-          <div key={key} className="mb-2">
-            <input type="checkbox" id={`honor-${honor.id}`} />
-            <label htmlFor={`honor-${honor.id}`}>{honor.name}</label>
-          </div>
-        ))}
+        {honors.length > 0 ? (
+          honors.map((honor: Honors, key) => (
+        <div key={key} className="mb-2">
+          <input type="checkbox" id={`honor-${honor.id}`} />
+          <label htmlFor={`honor-${honor.id}`}>{honor.name}</label>
+        </div>
+          ))
+        ) : (
+          <p>No honors found.</p>
+        )}
       </div>
 
       {/* Ask LLM for suggestions (POST https://ai.hackclub.com/chat/completions)*/}
       <button
-      className="btn btn-primary mt-4 mb-2"
+        className="btn btn-primary mt-4 mb-2"
         onClick={async () => {
           const prompt = `You are a College Admissions Counselor AI. Based on the user's application data, identify areas for improvement and provide suggestions. The user has provided the following information:
-          \nEssays: ${essays.map((essay) => `${essay.name}:\n${essay.content}`).join(", ")}
-          \nExtracurriculars: ${extracurriculars.map((ec) => `${ec.name}`).join(", ")}
+          \nEssays: ${essays
+            .map((essay) => `${essay.name}:\n${essay.content}`)
+            .join(", ")}
+          \nExtracurriculars: ${extracurriculars
+            .map((ec) => `${ec.name}`)
+            .join(", ")}
           \nHonors: ${honors.map((honor) => `${honor.name}`).join(", ")}
-          \nProfile: ${Object.keys(profile).map((key) => `${key}: ${profile[key as keyof Profile]}`).join("\n")}`;
-          const response = await fetch("https://ai.hackclub.com/chat/completions", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              model: "gpt-4",
-              messages: [
-                {
-                  role: "system",
-                  content: prompt,
-                },
-              ],
-            }),
-          });
+          \nProfile: ${Object.keys(profile)
+            .map((key) => `${key}: ${profile[key as keyof Profile]}`)
+            .join("\n")}`;
+          const response = await fetch(
+            "https://ai.hackclub.com/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model: "gpt-4",
+                messages: [
+                  {
+                    role: "system",
+                    content: prompt,
+                  },
+                ],
+              }),
+            }
+          );
 
           const data = await response.json();
 
-          if(data.hasOwnProperty('error')) {
+          if (data.hasOwnProperty("error")) {
             console.error("Error fetching suggestions:", data.error);
             return;
           }
