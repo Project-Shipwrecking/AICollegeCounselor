@@ -12,40 +12,50 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  providers: [CredentialsProvider({
-    name: "Credentials",
-    credentials: {
-      username: {
-        label: "username",
-        type: "username",
-        placeholder: "Jane Doe"
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: {
+          label: "username",
+          type: "username",
+          placeholder: "Jane Doe",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+        },
       },
-      password: {
-        label: "Password",
-        type: "password"
-      }
-    },
       async authorize(credentials, req) {
         console.log(credentials);
         console.log(req);
 
-        if (!credentials.username || !credentials.password || typeof credentials.password !== 'string') {
+        if (
+          !credentials.username ||
+          !credentials.password ||
+          typeof credentials.password !== "string"
+        ) {
           return null;
         }
-
+        const client = new MongoClient(uri);
         await client.connect();
         const db = client.db("userData"); // Replace with your DB name
         const users = db.collection("users");
 
         const user = await users.findOne({ username: credentials.username });
 
-        if (!user || typeof user.hashedPassword !== 'string') {
+        if (!user || typeof user.hashedPassword !== "string") {
+          await client.close();
           return null;
         }
 
-        const passwordMatch = await bcrypt.compare(credentials.password, user.hashedPassword);
+        const passwordMatch = await bcrypt.compare(
+          credentials.password,
+          user.hashedPassword
+        );
 
         if (!passwordMatch) {
+          await client.close();
           return null;
         }
 
@@ -60,25 +70,27 @@ export const {
           };
         }
         // Return null if user data could not be retrieved
+        await client.close();
         return null;
       },
-  })],
+    }),
+  ],
   callbacks: {
     // jwt({ token, user, account, profile, trigger, session}) {
     //   return {
     //     ...token,
     //   }
     // },
-    session({session, user, token}) {
-      console.log("User:")
-      console.log(user)
-      console.log("Session:")
-      console.log(session)
-      console.log("Token:")
-      console.log(token)
+    session({ session, user, token }) {
+      console.log("User:");
+      console.log(user);
+      console.log("Session:");
+      console.log(session);
+      console.log("Token:");
+      console.log(token);
       session.user.id = token?.sub || "";
-      return session
-    }
+      return session;
+    },
   },
   // session: {
   //   strategy: "database"
