@@ -1,29 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { MongoClient } from "mongodb";
-import bcrypt from "bcrypt";
-
-const uri = process.env.MONGODB_URI as string; // Set your MongoDB Atlas URI in .env.local
-
-// Global variable to cache the MongoDB client
-let cachedClient: MongoClient | null = null;
-
-async function connectToDatabase() {
-  if (cachedClient) {
-    return cachedClient;
-  }
-
-  const client = new MongoClient(uri, {
-    maxPoolSize: 10,
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
-    family: 4, // Use IPv4, skip trying IPv6
-  });
-
-  await client.connect();
-  cachedClient = client;
-  return client;
-}
 
 export const {
   handlers: { GET, POST },
@@ -58,30 +34,25 @@ export const {
         }
 
         try {
-          const client = await connectToDatabase();
-          const db = client.db("userData"); // Replace with your DB name
-          const users = db.collection("users");
-
-          const user = await users.findOne({ username: credentials.username });
-
-          if (!user || typeof user.hashedPassword !== "string") {
-            return null;
-          }
-
-          const passwordMatch = await bcrypt.compare(
-            credentials.password,
-            user.hashedPassword
+          console.log(credentials);
+          console.log(req);
+          const res = await fetch(
+            `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/login`,
+            {
+              method: "POST",
+              body: JSON.stringify(credentials),
+              headers: { "Content-Type": "application/json" },
+            }
           );
+          const user = await res.json();
 
-          if (!passwordMatch) {
-            return null;
-          }
+          console.log(user);
 
           // user.email = user.username;
           user.name = user.username;
 
           // If no error and we have user data, return it
-          if (user) {
+          if (res.ok && user) {
             return {
               name: user.username,
               id: user.id,
@@ -98,11 +69,11 @@ export const {
     }),
   ],
   callbacks: {
-    jwt({ token, user, account, profile, trigger, session}) {
+    jwt({ token, user, account, profile, trigger, session }) {
       return {
         ...token,
         sub: user?.id || token.sub,
-      }
+      };
     },
     session({ session, user, token }) {
       console.log("User:");
