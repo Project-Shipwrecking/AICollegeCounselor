@@ -9,6 +9,7 @@ function Header() {
     fetch("/api/admin")
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         if (data === true) setIsAdmin(true);
       })
       .catch(() => {});

@@ -12,7 +12,7 @@
 - [] Essays
     - [] Editing
         - Work on adding templates
-    - [] Brainstorming
+    <!-- - [] Brainstorming -->
     - [] Essay Analysis
 - [X] Profile
     - Maybe some CSS makeover if I get copilot

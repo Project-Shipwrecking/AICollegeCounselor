@@ -62,6 +62,7 @@ export default function Page() {
               essays.map((essay) => (
                 <div key={String(essay.id)} className="border p-4 rounded">
                   <h2 className="text-xl font-bold">{essay.name}</h2>
+                  <p className="text-gray-600">{essay.prompt}</p>
                   <textarea
                     className="w-100 cols border p-2 my-2"
                     value={String(essay.content)}
@@ -79,9 +80,9 @@ export default function Page() {
                     className="btn text-white px-4 py-2 rounded hover:bg-blue-600 btn-primary"
                     onClick={async () => {
                       await fetch("/api/application/essay/", {
-                        method: "PUT",
+                        method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(essay),
+                        body: JSON.stringify({essay}),
                       }).catch((error) => {
                         alert(
                           "Error saving essay " + essay.name + ": " + error

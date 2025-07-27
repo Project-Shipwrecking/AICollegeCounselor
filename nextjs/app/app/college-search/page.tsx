@@ -94,54 +94,63 @@ export default function Page() {
 
       <div className="container bg-white py-1 rounded">
         <div className="row">
-          {colleges.map((college, idx) => (
-            // Turn into a grid of cards
-            // Use Bootstrap classes for responsive design
-            <div key={idx} className="col-md-4 col-sm-6 col-xs-12">
-              {/* Card for each college */}
-              <div className="card m-3">
-                <div className="card-body">
-                  <h5 className="card-title">{college.name}</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">
-                    {college.location}
-                  </h6>
-                  <p className="card-text mb-2">
-                    <strong>Type:</strong>{" "}
-                    {college.type
-                      ?.toLowerCase()
-                      .split(" ")
-                      .map(
-                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
-                      )
-                      .join(" ") || "N/A"}
-                    <br />
-                    <strong>Tuition:</strong>
-                    {" $"}
-                    {college.tuition?.toLocaleString() ?? "N/A"}
-                    <br />
-                    <strong>Enrollment:</strong>{" "}
-                    {college.enrollment?.toLocaleString() ?? "N/A"}
-                    <br />
-                    <strong>Acceptance Rate:</strong>{" "}
-                    {college.acceptanceRate != null
-                      ? `${college.acceptanceRate}%`
-                      : "N/A"}
-                  </p>
-                  {/* add image */}
-                  {college.photos?.medium && (
-                    <Image
-                      src={String(college.photos.large)}
-                      className="card-img-top"
-                      alt={`${college.name} image`}
-                      width={400} // Adjust width as needed
-                      height={200} // Adjust height as needed
-                      style={{ maxHeight: "200px", objectFit: "cover" }}
-                    />
-                  )}
+          {colleges && colleges.length > 0 ? (
+            colleges.map((college, idx) => (
+              // Turn into a grid of cards
+              // Use Bootstrap classes for responsive design
+              <div key={idx} className="col-md-4 col-sm-6 col-xs-12">
+                {/* Card for each college */}
+                <div className="card m-3">
+                  <div className="card-body">
+                    <h5 className="card-title">{college.name}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      {college.location}
+                    </h6>
+                    <p className="card-text mb-2">
+                      <strong>Type:</strong>{" "}
+                      {college.type
+                        ?.toLowerCase()
+                        .split(" ")
+                        .map(
+                          (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join(" ") || "N/A"}
+                      <br />
+                      <strong>Tuition:</strong>
+                      {" $"}
+                      {college.tuition?.toLocaleString() ?? "N/A"}
+                      <br />
+                      <strong>Enrollment:</strong>{" "}
+                      {college.enrollment?.toLocaleString() ?? "N/A"}
+                      <br />
+                      <strong>Acceptance Rate:</strong>{" "}
+                      {college.acceptanceRate != null
+                        ? `${college.acceptanceRate}%`
+                        : "N/A"}
+                    </p>
+                    {/* add image */}
+                    {college.photos?.medium && (
+                      <Image
+                        src={String(college.photos.large)}
+                        className="card-img-top"
+                        alt={`${college.name} image`}
+                        width={400} // Adjust width as needed
+                        height={200} // Adjust height as needed
+                        style={{ maxHeight: "200px", objectFit: "cover" }}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="col-12">
+              <div className="text-center py-5">
+                <h4 className="text-muted">No Colleges Found</h4>
+                <p className="text-muted">Try adjusting your search criteria or browse all colleges.</p>
+              </div>
             </div>
-          ))}
+          )}
         </div>
         <div className="d-flex justify-content-center my-4">
           <div className="d-flex align-items-center gap-4">

@@ -28,7 +28,7 @@ export default function Page() {
         </div>
 
         {/* Card 2: Brainstorming */}
-        <div className="col-12 col-md-4 mb-4">
+        {/* <div className="col-12 col-md-4 mb-4">
           <div className="card h-100 shadow-sm border-0 rounded-lg">
             <div className="card-body d-flex flex-column justify-content-between">
               <div>
@@ -45,7 +45,7 @@ export default function Page() {
               </a>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Card 3: Editing */}
         <div className="col-12 col-md-4 mb-4">

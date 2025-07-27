@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
         }
 
         const data = await req.json();
+        console.log(data);
         if (!data || !data.essay) {
             return NextResponse.json({ error: "Essay data is required." }, { status: 400 });
         }
@@ -57,7 +58,7 @@ export async function POST(req: NextRequest) {
         const db = client.db(dbName);
         const collection = db.collection("users");
         const user = await collection.findOne({
-            id: token.sub,
+            username: token.name,
         });
 
         if (!user) {
