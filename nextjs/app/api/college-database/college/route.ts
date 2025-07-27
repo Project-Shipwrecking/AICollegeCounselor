@@ -9,7 +9,12 @@ const client = new MongoClient(uri);
 // Accepts POST request from the user and adds it to the college data queue to be manually checked by an admin
 export async function POST(req: NextRequest) {
   try {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const token = await getToken({
+      req: req,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName: "__Secure-authjs.session-token",
+    });
+
     if (!token || !token.sub || !token.name) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

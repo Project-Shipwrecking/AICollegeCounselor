@@ -16,7 +16,12 @@ const client = new MongoClient(uri);
 
 export async function GET(req: NextRequest) {
   try {
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    const token = await getToken({
+      req: req,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName: "__Secure-authjs.session-token",
+    });
+
     if (!token || !token.sub || !token.name) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -49,7 +54,12 @@ export async function GET(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    const token = await getToken({
+      req: req,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName: "__Secure-authjs.session-token",
+    });
+
     if (!token || !token.sub) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -87,21 +97,23 @@ export async function PUT(req: NextRequest) {
     let newExtracurriculars;
 
     if (exists) {
-      newExtracurriculars = extracurriculars.map((extracurricular: Extracurriculars) => {
-        if (extracurricular.id === data.extracurricular.id) {
-          extracurricular = {
-            ...extracurricular,
-            ...data.extracurricular,
-            id: extracurricular.id, // Ensure the ID remains unchanged
-          };
+      newExtracurriculars = extracurriculars.map(
+        (extracurricular: Extracurriculars) => {
+          if (extracurricular.id === data.extracurricular.id) {
+            extracurricular = {
+              ...extracurricular,
+              ...data.extracurricular,
+              id: extracurricular.id, // Ensure the ID remains unchanged
+            };
+          }
+          return extracurricular;
         }
-        return extracurricular;
-      });
+      );
     } else {
-        const newExtracurricular = {
-            ...data.extracurricular
-        };
-        newExtracurriculars = [...extracurriculars, newExtracurricular];
+      const newExtracurricular = {
+        ...data.extracurricular,
+      };
+      newExtracurriculars = [...extracurriculars, newExtracurricular];
     }
 
     await collection.updateOne(
@@ -124,7 +136,12 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    const token = await getToken({
+      req: req,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName: "__Secure-authjs.session-token",
+    });
+
     if (!token || !token.sub) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
