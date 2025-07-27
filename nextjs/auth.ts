@@ -44,7 +44,11 @@ export const {
               headers: { "Content-Type": "application/json" },
             }
           );
-          const user = await res.json();
+          const resText = await res.text();
+
+          console.log(resText);
+
+          const user = JSON.parse(resText);
 
           console.log(user);
 
